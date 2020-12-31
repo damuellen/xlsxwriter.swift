@@ -1,8 +1,6 @@
-# swiftxlsxwriter
+# xlsxwriter.swift
 
-
-Swiftxlsxwriter: A wrapper in Swift around Libxlsxwriter for creating Excel XLSX files.
-
+xlsxwriter.swift: A wrapper in Swift around Libxlsxwriter for creating Excel XLSX files.
 
 ## The libxlsxwriter library
 
@@ -43,23 +41,17 @@ Here is an example using Swift:
     defer { wb.close() }
     let ws = wb.addWorksheet()
 
-    /* Add a format.
+    // Add a format.
     let format = wb.addFormat()
 
-    /* Set the bold property for the format 
+    // Set the bold property for the format 
     format.set_bold()
 
-    /* Change the column width for clarity. 
-    worksheet_set_column(worksheet, 0, 0, 20, NULL);
-
-    /* Write some simple text. 
+    // Write some simple text. 
     ws.write(.string("Hello"), (0, 0))
   
-    /* Text with formatting.
+    // Text with formatting.
     ws.write(.string("World"), (0, 0), format: format)
 
-    /* Write some numbers.
-    worksheet_write_number(worksheet, 2, 0, 123,     NULL)
-    worksheet_write_number(worksheet, 3, 0, 123.456, NULL)
 
 ```
