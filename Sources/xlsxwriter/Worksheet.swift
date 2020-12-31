@@ -13,7 +13,7 @@ public struct Worksheet {
   init(_ lxw_worksheet: UnsafeMutablePointer<lxw_worksheet>) {
     self.lxw_worksheet = lxw_worksheet
   }
-  
+  /// Insert a chart object into a worksheet.
   public func insert(chart: Chart, _ pos: (row: Int, col: Int)) {
     let r = UInt32(pos.row), c = UInt16(pos.col)
     worksheet_insert_chart(lxw_worksheet, r, c, chart.lxw_chart)

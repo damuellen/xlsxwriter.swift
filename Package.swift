@@ -9,13 +9,13 @@ let package = Package(
     .library(name: "xlsxwriter", targets: ["xlsxwriter"]),
   ],
   dependencies: [
-    .package(name: "CMinizip", url: "https://github.com/sinoru/CMinizip.swift.git", from: "2.9.1")
+    .package(name: "CMinizip", url: "https://github.com/damuellen/CMinizip.swift.git", .branch("master"))
   ],
   targets: [
     .target(
       name: "xlsxwriter", dependencies: ["Cxlsxwriter"]),
     .target(
-      name: "Cxlsxwriter", dependencies: ["Cmd5", "Ctmpfileplus","CMinizip"]),
+      name: "Cxlsxwriter", dependencies: ["Cmd5", "Ctmpfileplus", "CMinizip"]),
     .target(
       name: "Cmd5"),
     .target(

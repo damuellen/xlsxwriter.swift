@@ -9,8 +9,8 @@ import Cxlsxwriter
 public struct Workbook {
 
   let lxw_workbook: UnsafeMutablePointer<lxw_workbook>
-  
-  init(name: String) {
+  /// Create a new workbook object.
+  public init(name: String) {
     self.lxw_workbook = name.withCString {
       workbook_new($0)
     }
@@ -43,7 +43,7 @@ public struct Workbook {
     }
     return Chartsheet(chartsheet)
   }
-  
+  /// Add a new format to the Excel workbook.
   public mutating func addFormat() -> Format {
     Format(workbook_add_format(lxw_workbook))
   }
@@ -72,4 +72,3 @@ public struct Workbook {
     }
   }
 }
-

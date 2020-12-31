@@ -2,6 +2,28 @@
 
 xlsxwriter.swift: A wrapper in Swift around Libxlsxwriter for creating Excel XLSX files.
 
+```Swift
+import xlsxwriter
+
+// Create a new workbook and add a worksheet.
+var wb = Workbook(name: "demo.xlsx")
+defer { wb.close() }
+let ws = wb.addWorksheet()
+
+// Add a format.
+let format = wb.addFormat()
+
+// Set the bold property for the format 
+format.set_bold()
+
+// Write some simple text. 
+ws.write(.string("Hello"), (0, 0))
+
+// Text with formatting.
+ws.write(.string("World"), (0, 1), format: format)
+
+```
+
 ## The libxlsxwriter library
 
 Libxlsxwriter is a C library that can be used to write text, numbers, formulas
@@ -29,29 +51,3 @@ It supports features such as:
 - Compiles for 32 and 64 bit.
 - Compiles and works on big and little endian systems.
 - The only dependency is on `zlib`.
-
-Here is an example using Swift:
-
-
-```Swift
-
-
-    // Create a new workbook and add a worksheet.
-    var wb = Workbook(name: "demo.xlsx")
-    defer { wb.close() }
-    let ws = wb.addWorksheet()
-
-    // Add a format.
-    let format = wb.addFormat()
-
-    // Set the bold property for the format 
-    format.set_bold()
-
-    // Write some simple text. 
-    ws.write(.string("Hello"), (0, 0))
-  
-    // Text with formatting.
-    ws.write(.string("World"), (0, 0), format: format)
-
-
-```

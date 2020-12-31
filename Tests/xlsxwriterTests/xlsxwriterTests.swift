@@ -3,17 +3,10 @@ import XCTest
 
 final class xlsxwriterTests: XCTestCase {
   func testExample() {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct
-        // results.
-    XCTAssertEqual("", "Hello, World!")
-      
-    
     var wb = Workbook(name: "demo.xlsx")
-    //defer { wb.close() }
+    // defer { wb.close() }
     let format = wb.addFormat()
     let ws = wb.addWorksheet()
-    //let ws2 = wb.addWorksheet()
     format.set_bold()
     format.set_border(style: .Double)
     format.set(alignment: .Right)

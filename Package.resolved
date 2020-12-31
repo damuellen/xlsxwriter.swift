@@ -3,11 +3,11 @@
     "pins": [
       {
         "package": "CMinizip",
-        "repositoryURL": "https://github.com/sinoru/CMinizip.swift.git",
+        "repositoryURL": "https://github.com/damuellen/CMinizip.swift.git",
         "state": {
-          "branch": null,
-          "revision": "78fb6a81d64330880e87c0df654825ada01fb336",
-          "version": "2.9.1"
+          "branch": "master",
+          "revision": "30553316cd5f6e3b4318df50114b71e0ad8bc7b6",
+          "version": null
         }
       }
     ]

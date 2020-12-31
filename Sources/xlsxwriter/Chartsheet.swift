@@ -58,4 +58,3 @@ public struct Chartsheet {
     header.withCString { chartsheet_set_header(lxw_chartsheet, $0)}
   }
 }
-

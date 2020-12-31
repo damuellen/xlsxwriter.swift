@@ -34,7 +34,7 @@ public enum Border: UInt8 {
  case Slant_dash_dot
 }
 
-/// Alignment values for format.set_align()
+/// Alignment values for format.set(alignment:)
 public enum Alignment: UInt8 {
   case None = 0
   case Left
