@@ -10,7 +10,7 @@
      For more info read MiniZip_info.txt
 
 */
-#ifdef _WIN64
+#ifdef _WIN32
 #include <stdlib.h>
 
 #include "zlib.h"

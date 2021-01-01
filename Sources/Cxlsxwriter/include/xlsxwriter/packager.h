@@ -14,7 +14,7 @@
 #ifdef USE_SYSTEM_MINIZIP
 #include "minizip/zip.h"
 #else
-#include "third_party/zip.h"
+#include "zip.h"
 #endif
 
 #include "common.h"

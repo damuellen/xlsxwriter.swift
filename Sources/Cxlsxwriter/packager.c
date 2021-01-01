@@ -48,7 +48,7 @@ STATIC lxw_error _write_vml_drawing_rels_file(lxw_packager *self,
 #ifdef USE_SYSTEM_MINIZIP
 #include "minizip/iowin32.h"
 #else
-#include "../third_party/minizip/iowin32.h"
+#include "iowin32.h"
 #endif
 
 zipFile
