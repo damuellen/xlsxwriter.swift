@@ -8,16 +8,17 @@ let package = Package(
   products: [
     .library(name: "xlsxwriter", targets: ["xlsxwriter"]),
   ],
-  dependencies: [
-    .package(name: "CMinizip", url: "https://github.com/damuellen/CMinizip.swift.git", .branch("master"))
-  ],
+  dependencies: [],
   targets: [
     .target(
       name: "xlsxwriter", dependencies: ["Cxlsxwriter"]),
     .target(
-      name: "Cxlsxwriter", dependencies: ["Cmd5", "Ctmpfileplus", "CMinizip"]),
+      name: "Cxlsxwriter",
+      dependencies: ["Cmd5", "Ctmpfileplus", "Cminizip"]),
     .target(
       name: "Cmd5"),
+    .target(
+      name: "Cminizip"),
     .target(
       name: "Ctmpfileplus"),
     .testTarget(
@@ -25,3 +26,16 @@ let package = Package(
     )
   ]
 )
+
+if let xlsxwriter = package.targets.first(where: { $0.name == "Cxlsxwriter" }) {
+#if os(Windows)
+  xlsxwriter.linkerSettings = [
+    .linkedLibrary("C:/Library/Zlib/x64/Zlib.lib")
+  ]  
+  xlsxwriter.cxxSettings = [.define("_CRT_SECURE_NO_WARNINGS")]
+#else 
+    xlsxwriter.linkerSettings = [
+    .linkedLibrary("z")
+  ]    
+#endif
+}
