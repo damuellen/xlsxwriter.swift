@@ -5,7 +5,7 @@
 
 import Foundation
 
-public enum Value {
+public enum Value: ExpressibleByFloatLiteral, ExpressibleByStringLiteral {
   case url(URL)
   case blank
   case comment(String)
@@ -14,41 +14,67 @@ public enum Value {
   case boolean(Bool)
   case formula(String)
   case datetime(String)
+  
+  public init(floatLiteral value: Double) {
+    self = .number(value)
+  }
+  
+  public init(stringLiteral value: String) {
+    self = .string(value)
+  }
+}
+
+public enum Axes {
+  case X,Y
+}
+
+public enum Trendline_type: UInt8 {
+  case linear
+  case log
+  case poly
+  case power
+  case exp
+  case average
 }
 
 /// Cell border styles for use with format.set_border()
 public enum Border: UInt8 {
- case NoBorder
- case Thin
- case Medium
- case Dashed
- case Dotted
- case Thick
- case Double
- case Hair
- case Medium_dashed
- case Dash_dot
- case Medium_dash_dot
- case Dash_dot_dot
- case Medium_dash_dot_dot
- case Slant_dash_dot
+  case noBorder
+  case thin
+  case medium
+  case dashed
+  case dotted
+  case thick
+  case double
+  case hair
+  case medium_dashed
+  case dash_dot
+  case medium_dash_dot
+  case dash_dot_dot
+  case medium_dash_dot_dot
+  case slant_dash_dot
 }
 
 /// Alignment values for format.set(alignment:)
-public enum Alignment: UInt8 {
-  case None = 0
-  case Left
-  case Center
-  case Right
-  case Fill
-  case Justify
-  case Center_Across
-  case DISTRIBUTED
-  case VERTICAL_TOP
-  case VERTICAL_BOTTOM
-  case VERTICAL_CENTER
-  case VERTICAL_JUSTIFY
-  case VERTICAL_DISTRIBUTED
+public enum HorizontalAlignment: UInt8 {
+  case none = 0
+  case left
+  case center
+  case right
+  case fill
+  case justify
+  case center_across
+  case distributed
+
+}
+
+/// Alignment values for format.set(alignment:)
+public enum VerticalAlignment: UInt8 {
+  case top = 8
+  case bottom
+  case center
+  case justify
+  case distributed
 }
 
 /// The Excel paper format type.
@@ -98,46 +124,58 @@ public enum PaperType: UInt8 {
 }
 /// Predefined values for common colors.
 public enum Color: UInt32 {
-  case Black = 0x1000000
-  case Blue = 0x0000FF
-  case Brown = 0x800000
-  case Cyan = 0x00FFFF
-  case Gray = 0x808080
-  case Green = 0x008000
-  case Lime = 0x00FF00
-  case Magenta = 0xFF00FF
-  case Navy = 0x000080
-  case Orange = 0xFF6600
-  case Purple = 0x800080
-  case Red = 0xFF0000
-  case Silver = 0xC0C0C0
-  case White = 0xFFFFFF
-  case Yellow = 0xFFFF00
+  case black = 0x1000000
+  case blue = 0x0000FF
+  case brown = 0x800000
+  case cyan = 0x00FFFF
+  case gray = 0x808080
+  case green = 0x008000
+  case lime = 0x00FF00
+  case magenta = 0xFF00FF
+  case navy = 0x000080
+  case orange = 0xFF6600
+  case purple = 0x800080
+  case red = 0xFF0000
+  case silver = 0xC0C0C0
+  case white = 0xFFFFFF
+  case yellow = 0xFFFF00
 }
 
 /// Available chart types.
 public enum Chart_type: UInt8 {
-  case None
-  case Area
-  case Area_stacked
-  case Area_percentage_stacked
-  case Bar
-  case Bar_stacked
-  case Bar_percentage_stacked
-  case Column
-  case Column_stacked
-  case Column_percentage_stacked
-  case Doughnut
-  case Line
-  case Line_stacked
-  case Line_percentage_stacked
-  case Pie
-  case Scatter
-  case Scatter_straight
-  case Scatter_straight_with_markers
-  case Scatter_smooth
-  case Scatter_smooth_with_markers
-  case Radar
-  case Radar_with_markers
-  case Radar_filled
+  case none
+  case area
+  case area_stacked
+  case area_percentage_stacked
+  case bar
+  case bar_stacked
+  case bar_percentage_stacked
+  case column
+  case column_stacked
+  case column_percentage_stacked
+  case doughnut
+  case line
+  case line_stacked
+  case line_percentage_stacked
+  case pie
+  case scatter
+  case scatter_straight
+  case scatter_straight_with_markers
+  case scatter_smooth
+  case scatter_smooth_with_markers
+  case radar
+  case radar_with_markers
+  case radar_filled
+}
+
+public enum Legend_position: UInt8 {
+  case none = 0
+  case right
+  case left
+  case top
+  case bottom
+  case top_right
+  case overlay_right
+  case overlay_left
+  case overlay_top_right
 }

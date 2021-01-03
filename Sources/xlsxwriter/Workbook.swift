@@ -17,10 +17,13 @@ public struct Workbook {
   }
   /// Close the Workbook object and write the XLSX file.
   public func close() {
-    print(String(cString: lxw_strerror(workbook_close(lxw_workbook))))
+    let error = workbook_close(lxw_workbook)
+    if error.rawValue != 0 {
+      fatalError(String(cString: lxw_strerror(error)))
+    }
   }
   /// Add a new worksheet to the Excel workbook.
-  public mutating func addWorksheet(name: String? = nil) -> Worksheet {
+  public func addWorksheet(name: String? = nil) -> Worksheet {
     let worksheet: UnsafeMutablePointer<lxw_worksheet>
     if let name = name {
       worksheet = name.withCString {
@@ -32,7 +35,7 @@ public struct Workbook {
     return Worksheet(worksheet)
   }
   /// Add a new chartsheet to a workbook.
-  public mutating func addChartsheet(name: String? = nil) -> Chartsheet {
+  public func addChartsheet(name: String? = nil) -> Chartsheet {
     let chartsheet: UnsafeMutablePointer<lxw_chartsheet>
     if let name = name {
       chartsheet = name.withCString {
@@ -44,12 +47,12 @@ public struct Workbook {
     return Chartsheet(chartsheet)
   }
   /// Add a new format to the Excel workbook.
-  public mutating func addFormat() -> Format {
+  public func addFormat() -> Format {
     Format(workbook_add_format(lxw_workbook))
   }
   /// Create a new chart to be added to a worksheet
-  public func add(chart: Chart_type) -> Chart {
-    Chart(workbook_add_chart(lxw_workbook, chart.rawValue))
+  public func addChart(type: Chart_type) -> Chart {
+    Chart(workbook_add_chart(lxw_workbook, type.rawValue))
   }
   /// Get a worksheet object from its name.
   public subscript(worksheet name: String) -> Worksheet? {
@@ -67,7 +70,7 @@ public struct Workbook {
   }
   /// Validate a worksheet or chartsheet name.
   func validate(sheet_name: String) {
-    sheet_name.withCString {
+    let _ = sheet_name.withCString {
       workbook_validate_sheet_name(lxw_workbook, $0)
     }
   }
