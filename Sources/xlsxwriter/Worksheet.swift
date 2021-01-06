@@ -157,24 +157,18 @@ public struct Worksheet {
   }
   /// Set the print area for a worksheet.
   @discardableResult
-  public func print_area(range: String) -> Worksheet {
-    range.withCString {
-      let _ = worksheet_print_area(lxw_worksheet,
-        lxw_name_to_row($0), lxw_name_to_col($0),
-        lxw_name_to_row_2($0), lxw_name_to_col_2($0)
-      )
-    }
+  public func print_area(range: Range) -> Worksheet {
+    let _ = worksheet_print_area(lxw_worksheet,
+      range.row, range.col, range.row2, range.col2
+    )
     return self
   }
   /// Set the autofilter area in the worksheet.
   @discardableResult
-  public func autofilter(range: String) -> Worksheet {
-    range.withCString {
-      let _ = worksheet_autofilter(lxw_worksheet,
-        lxw_name_to_row($0), lxw_name_to_col($0),
-        lxw_name_to_row_2($0), lxw_name_to_col_2($0)
-      )
-    }    
+  public func autofilter(range: Range) -> Worksheet {
+    let _ = worksheet_autofilter(lxw_worksheet,
+     range.row, range.col, range.row2, range.col2
+    )
     return self
   }
   /// Set the option to display or hide gridlines on the screen and the printed page.
