@@ -4,6 +4,7 @@
 //
 
 import Cxlsxwriter
+import Foundation
 
 /// Struct to represent an Excel worksheet.
 public struct Worksheet {
@@ -97,8 +98,8 @@ public struct Worksheet {
       error = formula.withCString { worksheet_write_formula(lxw_worksheet, r, c, $0, f) }
     case .datetime(let datetime):
       error = lxw_error(rawValue: 0)
-      print(datetime)
-      break// worksheet_write_datetime(pointer, r, c, datetime, format)
+      let num = (datetime.timeIntervalSince1970 / 86400) + 25569
+      worksheet_write_number(lxw_worksheet, r, c, num, f)
     }
     if error.rawValue != 0 {
       fatalError(String(cString: lxw_strerror(error)))
