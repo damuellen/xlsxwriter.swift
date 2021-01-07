@@ -25,6 +25,16 @@ public struct Worksheet {
     return self
   }
   
+  /// Insert a chart object into a worksheet, with options.
+  public func insert(chart: Chart, _ pos: (row: Int, col: Int), scale: (x: Double, y: Double)) -> Worksheet {
+    let r = UInt32(pos.row), c = UInt16(pos.col)
+    var o = lxw_chart_options(
+      x_offset: 0, y_offset: 0, x_scale: scale.x, y_scale: scale.y, object_position: 2
+    )
+    worksheet_insert_chart_opt(lxw_worksheet, r, c, chart.lxw_chart, &o)
+    return self
+  }
+
   /// Write a column of data starting from (row, col).
   @discardableResult
   public func write(column values: [Value], _ cell: Cell, format: Format? = nil) -> Worksheet {
@@ -141,6 +151,16 @@ public struct Worksheet {
   public func column(_ cols: Cols, width: Double, format: Format? = nil) -> Worksheet {
     let first = cols.col, last = cols.col2, f = format?.lxw_format
     worksheet_set_column(lxw_worksheet, first, last, width, f)
+    return self
+  }
+    /// Set the properties for one or more columns of cells.
+  @discardableResult
+  public func hide_columns(_ col: Int, width: Double = 8.43) -> Worksheet {
+    let first = UInt16(col)
+    let cols: Cols = "A:XFD"
+    let last = cols.col2
+    var o = lxw_row_col_options(hidden: 1, level: 0, collapsed: 0)
+    worksheet_set_column_opt(lxw_worksheet, first, last, width, nil, &o)
     return self
   }
   /// Set the color of the worksheet tab.
