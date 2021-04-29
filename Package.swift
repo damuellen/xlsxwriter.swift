@@ -14,9 +14,11 @@ let package = Package(
       name: "xlsxwriter", dependencies: ["Cxlsxwriter"]),
     .target(
       name: "Cxlsxwriter",
-      dependencies: ["Cmd5", "Ctmpfileplus"]),
+      dependencies: ["Cmd5", "Ctmpfileplus", "Cminizip"]),
     .target(
       name: "Cmd5"),
+    .target(
+      name: "Cminizip"),
     .target(
       name: "Ctmpfileplus"),
     .testTarget(
@@ -37,4 +39,3 @@ if let xlsxwriter = package.targets.first(where: { $0.name == "Cxlsxwriter" }) {
   ]    
 #endif
 }
-
