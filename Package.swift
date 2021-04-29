@@ -14,11 +14,9 @@ let package = Package(
       name: "xlsxwriter", dependencies: ["Cxlsxwriter"]),
     .target(
       name: "Cxlsxwriter",
-      dependencies: ["Cmd5", "Ctmpfileplus", "Cminizip"]),
+      dependencies: ["Cmd5", "Ctmpfileplus"]),
     .target(
       name: "Cmd5"),
-    .target(
-      name: "Cminizip"),
     .target(
       name: "Ctmpfileplus"),
     .testTarget(
