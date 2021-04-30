@@ -29,9 +29,7 @@ let package = Package(
 
 if let xlsxwriter = package.targets.first(where: { $0.name == "Cxlsxwriter" }) {
 #if os(Windows)
-  xlsxwriter.linkerSettings = [
-    .linkedLibrary("C:/Library/Zlib/x64/Zlib.lib")
-  ]  
+  xlsxwriter.linkerSettings = [.linkedLibrary("zlibstatic.lib")]  
   package.targets.filter { $0.name.hasPrefix("C") }.forEach {
     $0.cxxSettings = [.define("_CRT_SECURE_NO_WARNINGS")]
   }
@@ -41,4 +39,3 @@ if let xlsxwriter = package.targets.first(where: { $0.name == "Cxlsxwriter" }) {
   ]    
 #endif
 }
-
