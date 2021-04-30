@@ -482,7 +482,8 @@ typedef uLong FAR uLongf;
 #endif
 
 #if !defined(_WIN32) && defined(Z_LARGE64)
-#  define z_off64_t off64_t
+#  include <bits/types.h>
+#  define z_off64_t __off64_t
 #else
 #  if defined(_WIN32) && !defined(__GNUC__) && !defined(Z_SOLO)
 #    define z_off64_t __int64
