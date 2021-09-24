@@ -18,8 +18,7 @@ jobs:
       - name: Generate Documentation
         uses: SwiftDocOrg/swift-doc@master
         with:
-          inputs: "./xlsxwriter/Sources"
-          module-name: xlsxwriter
+          module-name: "xlsxwriter"
           output: "./documentation"
           format: "html"
           base-url: "https://damuellen.github.io/xlswriter.swift/"
