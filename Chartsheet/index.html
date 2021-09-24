@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>xlsxwriter - Chartsheet</title>
+    <link rel="stylesheet" type="text/css" href="https://damuellen.github.io/xlswriter.swift/all.css" media="all" />
+</head>
+<body>
+    <header>
+        <a href="https://damuellen.github.io/xlswriter.swift/">
+            <strong>
+                xlsxwriter
+            </strong>
+            <span>Documentation</span>
+        </a>
+    </header>
+
+    <!--
+    <form class="search">
+        <input type="search" placeholder="Search" />
+    </form>
+    -->
+
+    <nav>
+        <div class="wrapper">
+            <h2>On This Page</h2>
+            <ol><li><a href="#methods">Methods</a><ul><li class="function"><a href="#chartsheet.set(chart:)">set(chart:​)</a></li><li class="function"><a href="#chartsheet.select()">select()</a></li><li class="function"><a href="#chartsheet.hide()">hide()</a></li><li class="function"><a href="#chartsheet.activate()">activate()</a></li><li class="function"><a href="#chartsheet.protect(password:)">protect(password:​)</a></li><li class="function"><a href="#chartsheet.paper(type:)">paper(type:​)</a></li><li class="function"><a href="#chartsheet.zoom(scale:)">zoom(scale:​)</a></li><li class="function"><a href="#chartsheet.landscape()">landscape()</a></li><li class="function"><a href="#chartsheet.portrait()">portrait()</a></li><li class="function"><a href="#chartsheet.set(footer:)">set(footer:​)</a></li><li class="function"><a href="#chartsheet.set(header:)">set(header:​)</a></li></ul></li></ol>
+        </div>
+    </nav>
+
+    <main>
+        <article>
+            <h1>
+    <small>Structure</small>
+    <code class="name">Chartsheet</code>
+</h1>
+
+<div class="declaration">
+<pre class="highlight"><code><html><body><span class="keyword">public</span> <span class="keyword">struct</span> <span class="type">Chartsheet</span>  </body></html></code></pre>
+</div>
+<div class="summary" role="doc-abstract">
+    <p>Struct to represent an Excel chartsheet.</p>
+
+</div>
+
+    <section id="methods">
+        <h2>Methods</h2>
+
+        <div role="article" class="function" id="chartsheet.set(chart:)">
+    <h3>
+        <code><a href="#chartsheet.set(chart:)">set(chart:​)</a></code>
+    </h3>
+    <div class="declaration">
+<pre class="highlight"><code><html><body><span class="attribute">@</span><span class="attribute">discardableResult</span>
+  <span class="keyword">public</span> <span class="keyword">func</span> <span class="function">set</span>(<span class="variable">chart</span>: <a href="https://damuellen.github.io/xlswriter.swift/Chart"><span class="type">Chart</span></a>) -&gt; <a href="https://damuellen.github.io/xlswriter.swift/Chartsheet"><span class="type">Chartsheet</span></a>  </body></html></code></pre>
+</div>
+<div class="summary" role="doc-abstract">
+    <p>Insert a chart object into a chartsheet</p>
+
+</div>
+</div>
+<div role="article" class="function" id="chartsheet.select()">
+    <h3>
+        <code><a href="#chartsheet.select()">select()</a></code>
+    </h3>
+    <div class="declaration">
+<pre class="highlight"><code><html><body><span class="attribute">@</span><span class="attribute">discardableResult</span>
+  <span class="keyword">public</span> <span class="keyword">func</span> <span class="function">select</span>() -&gt; <a href="https://damuellen.github.io/xlswriter.swift/Chartsheet"><span class="type">Chartsheet</span></a>  </body></html></code></pre>
+</div>
+<div class="summary" role="doc-abstract">
+    <p>Set a chartsheet tab as selected.</p>
+
+</div>
+</div>
+<div role="article" class="function" id="chartsheet.hide()">
+    <h3>
+        <code><a href="#chartsheet.hide()">hide()</a></code>
+    </h3>
+    <div class="declaration">
+<pre class="highlight"><code><html><body><span class="attribute">@</span><span class="attribute">discardableResult</span>
+  <span class="keyword">public</span> <span class="keyword">func</span> <span class="function">hide</span>() -&gt; <a href="https://damuellen.github.io/xlswriter.swift/Chartsheet"><span class="type">Chartsheet</span></a>  </body></html></code></pre>
+</div>
+<div class="summary" role="doc-abstract">
+    <p>Hide the current chartsheet.</p>
+
+</div>
+</div>
+<div role="article" class="function" id="chartsheet.activate()">
+    <h3>
+        <code><a href="#chartsheet.activate()">activate()</a></code>
+    </h3>
+    <div class="declaration">
+<pre class="highlight"><code><html><body><span class="attribute">@</span><span class="attribute">discardableResult</span>
+  <span class="keyword">public</span> <span class="keyword">func</span> <span class="function">activate</span>() -&gt; <a href="https://damuellen.github.io/xlswriter.swift/Chartsheet"><span class="type">Chartsheet</span></a>  </body></html></code></pre>
+</div>
+<div class="summary" role="doc-abstract">
+    <p>Make a chartsheet the active, i.e., visible chartsheet.</p>
+
+</div>
+</div>
+<div role="article" class="function" id="chartsheet.protect(password:)">
+    <h3>
+        <code><a href="#chartsheet.protect(password:)">protect(password:​)</a></code>
+    </h3>
+    <div class="declaration">
+<pre class="highlight"><code><html><body><span class="attribute">@</span><span class="attribute">discardableResult</span>
+  <span class="keyword">public</span> <span class="keyword">func</span> <span class="function">protect</span>(<span class="variable">password</span>: <span class="type">String</span>) -&gt; <a href="https://damuellen.github.io/xlswriter.swift/Chartsheet"><span class="type">Chartsheet</span></a>  </body></html></code></pre>
+</div>
+<div class="summary" role="doc-abstract">
+    <p>Protect elements of a chartsheet from modification.</p>
+
+</div>
+</div>
+<div role="article" class="function" id="chartsheet.paper(type:)">
+    <h3>
+        <code><a href="#chartsheet.paper(type:)">paper(type:​)</a></code>
+    </h3>
+    <div class="declaration">
+<pre class="highlight"><code><html><body><span class="attribute">@</span><span class="attribute">discardableResult</span>
+  <span class="keyword">public</span> <span class="keyword">func</span> <span class="function">paper</span>(<span class="variable">type</span>: <a href="https://damuellen.github.io/xlswriter.swift/PaperType"><span class="type">PaperType</span></a>) -&gt; <a href="https://damuellen.github.io/xlswriter.swift/Chartsheet"><span class="type">Chartsheet</span></a>  </body></html></code></pre>
+</div>
+<div class="summary" role="doc-abstract">
+    <p>Set the paper type for printing.</p>
+
+</div>
+</div>
+<div role="article" class="function" id="chartsheet.zoom(scale:)">
+    <h3>
+        <code><a href="#chartsheet.zoom(scale:)">zoom(scale:​)</a></code>
+    </h3>
+    <div class="declaration">
+<pre class="highlight"><code><html><body><span class="attribute">@</span><span class="attribute">discardableResult</span>
+  <span class="keyword">public</span> <span class="keyword">func</span> <span class="function">zoom</span>(<span class="variable">scale</span>: <span class="type">Int</span>) -&gt; <a href="https://damuellen.github.io/xlswriter.swift/Chartsheet"><span class="type">Chartsheet</span></a>  </body></html></code></pre>
+</div>
+<div class="summary" role="doc-abstract">
+    <p>Set the chartsheet zoom factor.</p>
+
+</div>
+</div>
+<div role="article" class="function" id="chartsheet.landscape()">
+    <h3>
+        <code><a href="#chartsheet.landscape()">landscape()</a></code>
+    </h3>
+    <div class="declaration">
+<pre class="highlight"><code><html><body><span class="attribute">@</span><span class="attribute">discardableResult</span>
+  <span class="keyword">public</span> <span class="keyword">func</span> <span class="function">landscape</span>() -&gt; <a href="https://damuellen.github.io/xlswriter.swift/Chartsheet"><span class="type">Chartsheet</span></a>  </body></html></code></pre>
+</div>
+<div class="summary" role="doc-abstract">
+    <p>Set the page orientation as landscape.</p>
+
+</div>
+</div>
+<div role="article" class="function" id="chartsheet.portrait()">
+    <h3>
+        <code><a href="#chartsheet.portrait()">portrait()</a></code>
+    </h3>
+    <div class="declaration">
+<pre class="highlight"><code><html><body><span class="attribute">@</span><span class="attribute">discardableResult</span>
+  <span class="keyword">public</span> <span class="keyword">func</span> <span class="function">portrait</span>() -&gt; <a href="https://damuellen.github.io/xlswriter.swift/Chartsheet"><span class="type">Chartsheet</span></a>  </body></html></code></pre>
+</div>
+<div class="summary" role="doc-abstract">
+    <p>Set the page orientation as portrait.</p>
+
+</div>
+</div>
+<div role="article" class="function" id="chartsheet.set(footer:)">
+    <h3>
+        <code><a href="#chartsheet.set(footer:)">set(footer:​)</a></code>
+    </h3>
+    <div class="declaration">
+<pre class="highlight"><code><html><body><span class="attribute">@</span><span class="attribute">discardableResult</span>
+  <span class="keyword">public</span> <span class="keyword">func</span> <span class="function">set</span>(<span class="variable">footer</span>: <span class="type">String</span>) -&gt; <a href="https://damuellen.github.io/xlswriter.swift/Chartsheet"><span class="type">Chartsheet</span></a>  </body></html></code></pre>
+</div>
+<div class="summary" role="doc-abstract">
+    <p>Set the printed page footer caption.</p>
+
+</div>
+</div>
+<div role="article" class="function" id="chartsheet.set(header:)">
+    <h3>
+        <code><a href="#chartsheet.set(header:)">set(header:​)</a></code>
+    </h3>
+    <div class="declaration">
+<pre class="highlight"><code><html><body><span class="attribute">@</span><span class="attribute">discardableResult</span>
+  <span class="keyword">public</span> <span class="keyword">func</span> <span class="function">set</span>(<span class="variable">header</span>: <span class="type">String</span>) -&gt; <a href="https://damuellen.github.io/xlswriter.swift/Chartsheet"><span class="type">Chartsheet</span></a>  </body></html></code></pre>
+</div>
+<div class="summary" role="doc-abstract">
+    <p>Set the printed page header caption.</p>
+
+</div>
+</div>
+    </section>
+
+
+
+        </article>
+    </main>
+
+    <footer>
+        <p>
+    Generated on <time datetime="2021-09-24T13:22:42+0000">September 24, 2021</time> using <a href="https://github.com/SwiftDocOrg/swift-doc">swift-doc</a> <span class="version">1.0.0-rc.1</span>.
+</p>
+    </footer>
+</body>
+</html>

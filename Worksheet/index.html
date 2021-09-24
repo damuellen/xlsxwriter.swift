@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>xlsxwriter - Worksheet</title>
+    <link rel="stylesheet" type="text/css" href="https://damuellen.github.io/xlswriter.swift/all.css" media="all" />
+</head>
+<body>
+    <header>
+        <a href="https://damuellen.github.io/xlswriter.swift/">
+            <strong>
+                xlsxwriter
+            </strong>
+            <span>Documentation</span>
+        </a>
+    </header>
+
+    <!--
+    <form class="search">
+        <input type="search" placeholder="Search" />
+    </form>
+    -->
+
+    <nav>
+        <div class="wrapper">
+            <h2>On This Page</h2>
+            <ol><li><a href="#methods">Methods</a><ul><li class="function"><a href="#worksheet.insert(chart:_:)">insert(chart:​_:​)</a></li><li class="function"><a href="#worksheet.insert(chart:_:scale:)">insert(chart:​_:​scale:​)</a></li><li class="function"><a href="#worksheet.write(column:_:format:)">write(column:​_:​format:​)</a></li><li class="function"><a href="#worksheet.write(row:_:format:)">write(row:​_:​format:​)</a></li><li class="function"><a href="#worksheet.write(_:row:col:format:)">write(_:​row:​col:​format:​)</a></li><li class="function"><a href="#worksheet.write(_:row:col:format:)">write(_:​row:​col:​format:​)</a></li><li class="function"><a href="#worksheet.write(_:_:format:)">write(_:​_:​format:​)</a></li><li class="function"><a href="#worksheet.select()">select()</a></li><li class="function"><a href="#worksheet.hide()">hide()</a></li><li class="function"><a href="#worksheet.activate()">activate()</a></li><li class="function"><a href="#worksheet.hide_zero()">hide_zero()</a></li><li class="function"><a href="#worksheet.paper(type:)">paper(type:​)</a></li><li class="function"><a href="#worksheet.column(_:width:format:)">column(_:​width:​format:​)</a></li><li class="function"><a href="#worksheet.hide_columns(_:width:)">hide_columns(_:​width:​)</a></li><li class="function"><a href="#worksheet.tab(color:)">tab(color:​)</a></li><li class="function"><a href="#worksheet.set_default(row_height:hide_unused_rows:)">set_default(row_height:​hide_unused_rows:​)</a></li><li class="function"><a href="#worksheet.print_area(range:)">print_area(range:​)</a></li><li class="function"><a href="#worksheet.autofilter(range:)">autofilter(range:​)</a></li><li class="function"><a href="#worksheet.gridline(screen:print:)">gridline(screen:​print:​)</a></li></ul></li></ol>
+        </div>
+    </nav>
+
+    <main>
+        <article>
+            <h1>
+    <small>Structure</small>
+    <code class="name">Worksheet</code>
+</h1>
+
+<div class="declaration">
+<pre class="highlight"><code><html><body><span class="keyword">public</span> <span class="keyword">struct</span> <span class="type">Worksheet</span>  </body></html></code></pre>
+</div>
+<div class="summary" role="doc-abstract">
+    <p>Struct to represent an Excel worksheet.</p>
+
+</div>
+
+    <section id="methods">
+        <h2>Methods</h2>
+
+        <div role="article" class="function" id="worksheet.insert(chart:_:)">
+    <h3>
+        <code><a href="#worksheet.insert(chart:_:)">insert(chart:​_:​)</a></code>
+    </h3>
+    <div class="declaration">
+<pre class="highlight"><code><html><body><span class="keyword">public</span> <span class="keyword">func</span> <span class="function">insert</span>(<span class="variable">chart</span>: <a href="https://damuellen.github.io/xlswriter.swift/Chart"><span class="type">Chart</span></a>, <span class="keyword">_</span> <span class="variable">pos</span>: (<span class="variable">row</span>: <span class="type">Int</span>, <span class="variable">col</span>: <span class="type">Int</span>)) -&gt; <a href="https://damuellen.github.io/xlswriter.swift/Worksheet"><span class="type">Worksheet</span></a>  </body></html></code></pre>
+</div>
+<div class="summary" role="doc-abstract">
+    <p>Insert a chart object into a worksheet.</p>
+
+</div>
+</div>
+<div role="article" class="function" id="worksheet.insert(chart:_:scale:)">
+    <h3>
+        <code><a href="#worksheet.insert(chart:_:scale:)">insert(chart:​_:​scale:​)</a></code>
+    </h3>
+    <div class="declaration">
+<pre class="highlight"><code><html><body><span class="keyword">public</span> <span class="keyword">func</span> <span class="function">insert</span>(<span class="variable">chart</span>: <a href="https://damuellen.github.io/xlswriter.swift/Chart"><span class="type">Chart</span></a>, <span class="keyword">_</span> <span class="variable">pos</span>: (<span class="variable">row</span>: <span class="type">Int</span>, <span class="variable">col</span>: <span class="type">Int</span>), <span class="variable">scale</span>: (<span class="variable">x</span>: <span class="type">Double</span>, <span class="variable">y</span>: <span class="type">Double</span>)) -&gt; <a href="https://damuellen.github.io/xlswriter.swift/Worksheet"><span class="type">Worksheet</span></a>  </body></html></code></pre>
+</div>
+<div class="summary" role="doc-abstract">
+    <p>Insert a chart object into a worksheet, with options.</p>
+
+</div>
+</div>
+<div role="article" class="function" id="worksheet.write(column:_:format:)">
+    <h3>
+        <code><a href="#worksheet.write(column:_:format:)">write(column:​_:​format:​)</a></code>
+    </h3>
+    <div class="declaration">
+<pre class="highlight"><code><html><body><span class="attribute">@</span><span class="attribute">discardableResult</span>
+  <span class="keyword">public</span> <span class="keyword">func</span> <span class="function">write</span>(<span class="variable">column</span> <span class="variable">values</span>: [<a href="https://damuellen.github.io/xlswriter.swift/Value"><span class="type">Value</span></a>], <span class="keyword">_</span> <span class="variable">cell</span>: <a href="https://damuellen.github.io/xlswriter.swift/Cell"><span class="type">Cell</span></a>, <span class="variable">format</span>: <a href="https://damuellen.github.io/xlswriter.swift/Format"><span class="type">Format</span></a>? = <span class="keyword">nil</span>) -&gt; <a href="https://damuellen.github.io/xlswriter.swift/Worksheet"><span class="type">Worksheet</span></a>  </body></html></code></pre>
+</div>
+<div class="summary" role="doc-abstract">
+    <p>Write a column of data starting from (row, col).</p>
+
+</div>
+</div>
+<div role="article" class="function" id="worksheet.write(row:_:format:)">
+    <h3>
+        <code><a href="#worksheet.write(row:_:format:)">write(row:​_:​format:​)</a></code>
+    </h3>
+    <div class="declaration">
+<pre class="highlight"><code><html><body><span class="attribute">@</span><span class="attribute">discardableResult</span>
+  <span class="keyword">public</span> <span class="keyword">func</span> <span class="function">write</span>(<span class="variable">row</span> <span class="variable">values</span>: [<a href="https://damuellen.github.io/xlswriter.swift/Value"><span class="type">Value</span></a>], <span class="keyword">_</span> <span class="variable">cell</span>: <a href="https://damuellen.github.io/xlswriter.swift/Cell"><span class="type">Cell</span></a>, <span class="variable">format</span>: <a href="https://damuellen.github.io/xlswriter.swift/Format"><span class="type">Format</span></a>? = <span class="keyword">nil</span>) -&gt; <a href="https://damuellen.github.io/xlswriter.swift/Worksheet"><span class="type">Worksheet</span></a>  </body></html></code></pre>
+</div>
+<div class="summary" role="doc-abstract">
+    <p>Write a row of data starting from (row, col).</p>
+
+</div>
+</div>
+<div role="article" class="function" id="worksheet.write(_:row:col:format:)">
+    <h3>
+        <code><a href="#worksheet.write(_:row:col:format:)">write(_:​row:​col:​format:​)</a></code>
+    </h3>
+    <div class="declaration">
+<pre class="highlight"><code><html><body><span class="attribute">@</span><span class="attribute">discardableResult</span>
+  <span class="keyword">public</span> <span class="keyword">func</span> <span class="function">write</span>(<span class="keyword">_</span> <span class="variable">numbers</span>: [<span class="type">Double</span>], <span class="variable">row</span>: <span class="type">Int</span>, <span class="variable">col</span>: <span class="type">Int</span> = <span class="number literal">0</span>, <span class="variable">format</span>: <a href="https://damuellen.github.io/xlswriter.swift/Format"><span class="type">Format</span></a>? = <span class="keyword">nil</span>) -&gt; <a href="https://damuellen.github.io/xlswriter.swift/Worksheet"><span class="type">Worksheet</span></a>  </body></html></code></pre>
+</div>
+<div class="summary" role="doc-abstract">
+    <p>Write a row of Double values starting from (row, col).</p>
+
+</div>
+</div>
+<div role="article" class="function" id="worksheet.write(_:row:col:format:)">
+    <h3>
+        <code><a href="#worksheet.write(_:row:col:format:)">write(_:​row:​col:​format:​)</a></code>
+    </h3>
+    <div class="declaration">
+<pre class="highlight"><code><html><body><span class="attribute">@</span><span class="attribute">discardableResult</span>
+  <span class="keyword">public</span> <span class="keyword">func</span> <span class="function">write</span>(<span class="keyword">_</span> <span class="variable">strings</span>: [<span class="type">String</span>], <span class="variable">row</span>: <span class="type">Int</span>, <span class="variable">col</span>: <span class="type">Int</span> = <span class="number literal">0</span>, <span class="variable">format</span>: <a href="https://damuellen.github.io/xlswriter.swift/Format"><span class="type">Format</span></a>? = <span class="keyword">nil</span>) -&gt; <a href="https://damuellen.github.io/xlswriter.swift/Worksheet"><span class="type">Worksheet</span></a>  </body></html></code></pre>
+</div>
+<div class="summary" role="doc-abstract">
+    <p>Write a row of String values starting from (row, col).</p>
+
+</div>
+</div>
+<div role="article" class="function" id="worksheet.write(_:_:format:)">
+    <h3>
+        <code><a href="#worksheet.write(_:_:format:)">write(_:​_:​format:​)</a></code>
+    </h3>
+    <div class="declaration">
+<pre class="highlight"><code><html><body><span class="attribute">@</span><span class="attribute">discardableResult</span>
+  <span class="keyword">public</span> <span class="keyword">func</span> <span class="function">write</span>(<span class="keyword">_</span> <span class="variable">value</span>: <a href="https://damuellen.github.io/xlswriter.swift/Value"><span class="type">Value</span></a>, <span class="keyword">_</span> <span class="variable">cell</span>: <a href="https://damuellen.github.io/xlswriter.swift/Cell"><span class="type">Cell</span></a>, <span class="variable">format</span>: <a href="https://damuellen.github.io/xlswriter.swift/Format"><span class="type">Format</span></a>? = <span class="keyword">nil</span>) -&gt; <a href="https://damuellen.github.io/xlswriter.swift/Worksheet"><span class="type">Worksheet</span></a>  </body></html></code></pre>
+</div>
+<div class="summary" role="doc-abstract">
+    <p>Write data to a worksheet cell by calling the appropriate
+worksheet_write_*() method based on the type of data being passed.</p>
+
+</div>
+</div>
+<div role="article" class="function" id="worksheet.select()">
+    <h3>
+        <code><a href="#worksheet.select()">select()</a></code>
+    </h3>
+    <div class="declaration">
+<pre class="highlight"><code><html><body><span class="attribute">@</span><span class="attribute">discardableResult</span>
+  <span class="keyword">public</span> <span class="keyword">func</span> <span class="function">select</span>() -&gt; <a href="https://damuellen.github.io/xlswriter.swift/Worksheet"><span class="type">Worksheet</span></a>  </body></html></code></pre>
+</div>
+<div class="summary" role="doc-abstract">
+    <p>Set a worksheet tab as selected.</p>
+
+</div>
+</div>
+<div role="article" class="function" id="worksheet.hide()">
+    <h3>
+        <code><a href="#worksheet.hide()">hide()</a></code>
+    </h3>
+    <div class="declaration">
+<pre class="highlight"><code><html><body><span class="attribute">@</span><span class="attribute">discardableResult</span>
+  <span class="keyword">public</span> <span class="keyword">func</span> <span class="function">hide</span>() -&gt; <a href="https://damuellen.github.io/xlswriter.swift/Worksheet"><span class="type">Worksheet</span></a>  </body></html></code></pre>
+</div>
+<div class="summary" role="doc-abstract">
+    <p>Hide the current worksheet.</p>
+
+</div>
+</div>
+<div role="article" class="function" id="worksheet.activate()">
+    <h3>
+        <code><a href="#worksheet.activate()">activate()</a></code>
+    </h3>
+    <div class="declaration">
+<pre class="highlight"><code><html><body><span class="attribute">@</span><span class="attribute">discardableResult</span>
+  <span class="keyword">public</span> <span class="keyword">func</span> <span class="function">activate</span>() -&gt; <a href="https://damuellen.github.io/xlswriter.swift/Worksheet"><span class="type">Worksheet</span></a>  </body></html></code></pre>
+</div>
+<div class="summary" role="doc-abstract">
+    <p>Make a worksheet the active, i.e., visible worksheet.</p>
+
+</div>
+</div>
+<div role="article" class="function" id="worksheet.hide_zero()">
+    <h3>
+        <code><a href="#worksheet.hide_zero()">hide_zero()</a></code>
+    </h3>
+    <div class="declaration">
+<pre class="highlight"><code><html><body><span class="attribute">@</span><span class="attribute">discardableResult</span>
+  <span class="keyword">public</span> <span class="keyword">func</span> <span class="function">hide_zero</span>() -&gt; <a href="https://damuellen.github.io/xlswriter.swift/Worksheet"><span class="type">Worksheet</span></a>  </body></html></code></pre>
+</div>
+<div class="summary" role="doc-abstract">
+    <p>Hide zero values in worksheet cells.</p>
+
+</div>
+</div>
+<div role="article" class="function" id="worksheet.paper(type:)">
+    <h3>
+        <code><a href="#worksheet.paper(type:)">paper(type:​)</a></code>
+    </h3>
+    <div class="declaration">
+<pre class="highlight"><code><html><body><span class="attribute">@</span><span class="attribute">discardableResult</span>
+  <span class="keyword">public</span> <span class="keyword">func</span> <span class="function">paper</span>(<span class="variable">type</span>: <a href="https://damuellen.github.io/xlswriter.swift/PaperType"><span class="type">PaperType</span></a>) -&gt; <a href="https://damuellen.github.io/xlswriter.swift/Worksheet"><span class="type">Worksheet</span></a>  </body></html></code></pre>
+</div>
+<div class="summary" role="doc-abstract">
+    <p>Set the paper type for printing.</p>
+
+</div>
+</div>
+<div role="article" class="function" id="worksheet.column(_:width:format:)">
+    <h3>
+        <code><a href="#worksheet.column(_:width:format:)">column(_:​width:​format:​)</a></code>
+    </h3>
+    <div class="declaration">
+<pre class="highlight"><code><html><body><span class="attribute">@</span><span class="attribute">discardableResult</span>
+  <span class="keyword">public</span> <span class="keyword">func</span> <span class="function">column</span>(<span class="keyword">_</span> <span class="variable">cols</span>: <a href="https://damuellen.github.io/xlswriter.swift/Cols"><span class="type">Cols</span></a>, <span class="variable">width</span>: <span class="type">Double</span>, <span class="variable">format</span>: <a href="https://damuellen.github.io/xlswriter.swift/Format"><span class="type">Format</span></a>? = <span class="keyword">nil</span>) -&gt; <a href="https://damuellen.github.io/xlswriter.swift/Worksheet"><span class="type">Worksheet</span></a>  </body></html></code></pre>
+</div>
+<div class="summary" role="doc-abstract">
+    <p>Set the properties for one or more columns of cells.</p>
+
+</div>
+</div>
+<div role="article" class="function" id="worksheet.hide_columns(_:width:)">
+    <h3>
+        <code><a href="#worksheet.hide_columns(_:width:)">hide_columns(_:​width:​)</a></code>
+    </h3>
+    <div class="declaration">
+<pre class="highlight"><code><html><body><span class="attribute">@</span><span class="attribute">discardableResult</span>
+  <span class="keyword">public</span> <span class="keyword">func</span> <span class="function">hide_columns</span>(<span class="keyword">_</span> <span class="variable">col</span>: <span class="type">Int</span>, <span class="variable">width</span>: <span class="type">Double</span> = <span class="number literal">8.43</span>) -&gt; <a href="https://damuellen.github.io/xlswriter.swift/Worksheet"><span class="type">Worksheet</span></a>  </body></html></code></pre>
+</div>
+<div class="summary" role="doc-abstract">
+    <p>Set the properties for one or more columns of cells.</p>
+
+</div>
+</div>
+<div role="article" class="function" id="worksheet.tab(color:)">
+    <h3>
+        <code><a href="#worksheet.tab(color:)">tab(color:​)</a></code>
+    </h3>
+    <div class="declaration">
+<pre class="highlight"><code><html><body><span class="attribute">@</span><span class="attribute">discardableResult</span>
+  <span class="keyword">public</span> <span class="keyword">func</span> <span class="function">tab</span>(<span class="variable">color</span>: <a href="https://damuellen.github.io/xlswriter.swift/Color"><span class="type">Color</span></a>) -&gt; <a href="https://damuellen.github.io/xlswriter.swift/Worksheet"><span class="type">Worksheet</span></a>  </body></html></code></pre>
+</div>
+<div class="summary" role="doc-abstract">
+    <p>Set the color of the worksheet tab.</p>
+
+</div>
+</div>
+<div role="article" class="function" id="worksheet.set_default(row_height:hide_unused_rows:)">
+    <h3>
+        <code><a href="#worksheet.set_default(row_height:hide_unused_rows:)">set_default(row_height:​hide_unused_rows:​)</a></code>
+    </h3>
+    <div class="declaration">
+<pre class="highlight"><code><html><body><span class="attribute">@</span><span class="attribute">discardableResult</span>
+  <span class="keyword">public</span> <span class="keyword">func</span> <span class="function">set_default</span>(<span class="variable">row_height</span>: <span class="type">Double</span>, <span class="variable">hide_unused_rows</span>: <span class="type">Bool</span> = <span class="keyword">true</span>) -&gt; <a href="https://damuellen.github.io/xlswriter.swift/Worksheet"><span class="type">Worksheet</span></a>  </body></html></code></pre>
+</div>
+<div class="summary" role="doc-abstract">
+    <p>Set the default row properties.</p>
+
+</div>
+</div>
+<div role="article" class="function" id="worksheet.print_area(range:)">
+    <h3>
+        <code><a href="#worksheet.print_area(range:)">print_area(range:​)</a></code>
+    </h3>
+    <div class="declaration">
+<pre class="highlight"><code><html><body><span class="attribute">@</span><span class="attribute">discardableResult</span>
+  <span class="keyword">public</span> <span class="keyword">func</span> <span class="function">print_area</span>(<span class="variable">range</span>: <a href="https://damuellen.github.io/xlswriter.swift/Range"><span class="type">Range</span></a>) -&gt; <a href="https://damuellen.github.io/xlswriter.swift/Worksheet"><span class="type">Worksheet</span></a>  </body></html></code></pre>
+</div>
+<div class="summary" role="doc-abstract">
+    <p>Set the print area for a worksheet.</p>
+
+</div>
+</div>
+<div role="article" class="function" id="worksheet.autofilter(range:)">
+    <h3>
+        <code><a href="#worksheet.autofilter(range:)">autofilter(range:​)</a></code>
+    </h3>
+    <div class="declaration">
+<pre class="highlight"><code><html><body><span class="attribute">@</span><span class="attribute">discardableResult</span>
+  <span class="keyword">public</span> <span class="keyword">func</span> <span class="function">autofilter</span>(<span class="variable">range</span>: <a href="https://damuellen.github.io/xlswriter.swift/Range"><span class="type">Range</span></a>) -&gt; <a href="https://damuellen.github.io/xlswriter.swift/Worksheet"><span class="type">Worksheet</span></a>  </body></html></code></pre>
+</div>
+<div class="summary" role="doc-abstract">
+    <p>Set the autofilter area in the worksheet.</p>
+
+</div>
+</div>
+<div role="article" class="function" id="worksheet.gridline(screen:print:)">
+    <h3>
+        <code><a href="#worksheet.gridline(screen:print:)">gridline(screen:​print:​)</a></code>
+    </h3>
+    <div class="declaration">
+<pre class="highlight"><code><html><body><span class="attribute">@</span><span class="attribute">discardableResult</span>
+  <span class="keyword">public</span> <span class="keyword">func</span> <span class="function">gridline</span>(<span class="variable">screen</span>: <span class="type">Bool</span>, <span class="variable">print</span>: <span class="type">Bool</span> = <span class="keyword">false</span>) -&gt; <a href="https://damuellen.github.io/xlswriter.swift/Worksheet"><span class="type">Worksheet</span></a>  </body></html></code></pre>
+</div>
+<div class="summary" role="doc-abstract">
+    <p>Set the option to display or hide gridlines on the screen and the printed page.</p>
+
+</div>
+</div>
+    </section>
+
+
+
+        </article>
+    </main>
+
+    <footer>
+        <p>
+    Generated on <time datetime="2021-09-24T13:22:42+0000">September 24, 2021</time> using <a href="https://github.com/SwiftDocOrg/swift-doc">swift-doc</a> <span class="version">1.0.0-rc.1</span>.
+</p>
+    </footer>
+</body>
+</html>
