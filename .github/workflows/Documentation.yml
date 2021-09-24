@@ -21,7 +21,7 @@ jobs:
           module-name: "xlsxwriter"
           output: "./documentation"
           format: "html"
-          base-url: "https://damuellen.github.io/xlswriter.swift/"
+          base-url: "https://damuellen.github.io/xlsxwriter.swift/"
           
       - run: sudo chown -R $USER:$USER ./documentation
       
