@@ -29,7 +29,7 @@ public struct Worksheet {
   public func insert(chart: Chart, _ pos: (row: Int, col: Int), scale: (x: Double, y: Double)) -> Worksheet {
     let r = UInt32(pos.row), c = UInt16(pos.col)
     var o = lxw_chart_options(
-      x_offset: 0, y_offset: 0, x_scale: scale.x, y_scale: scale.y, object_position: 2, decorative: 0
+      x_offset: 0, y_offset: 0, x_scale: scale.x, y_scale: scale.y, object_position: 2, description: nil, decorative: 0
     )
     worksheet_insert_chart_opt(lxw_worksheet, r, c, chart.lxw_chart, &o)
     return self
