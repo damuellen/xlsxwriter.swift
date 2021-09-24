@@ -3,7 +3,7 @@
  *
  * Used in conjunction with the libxlsxwriter library.
  *
- * Copyright 2014-2020, John McNamara, jmcnamara@cpan.org. See LICENSE.txt.
+ * Copyright 2014-2021, John McNamara, jmcnamara@cpan.org. See LICENSE.txt.
  *
  */
 
@@ -15,6 +15,10 @@
 #include "xlsxwriter.h"
 #include "xlsxwriter/common.h"
 #include "tmpfileplus.h"
+
+#ifdef USE_DTOA_LIBRARY
+#include "xlsxwriter/third_party/emyg_dtoa.h"
+#endif
 
 char *error_strings[LXW_MAX_ERRNO + 1] = {
     "No error.",
@@ -395,7 +399,7 @@ lxw_datetime_to_excel_date_epoch(lxw_datetime *datetime, uint8_t date_1904)
     /* Add days for all previous years.  */
     days += range * 365;
     /* Add 4 year leapdays. */
-    days += (range) / 4;
+    days += range / 4;
     /* Remove 100 year leapdays. */
     days -= (range + offset) / 100;
     /* Add 400 year leapdays. */
@@ -417,6 +421,34 @@ double
 lxw_datetime_to_excel_datetime(lxw_datetime *datetime)
 {
     return lxw_datetime_to_excel_date_epoch(datetime, LXW_FALSE);
+}
+
+/*
+ * Convert a unix datetime (1970/01/01 epoch) to an Excel serial date, with a
+ * 1900 epoch.
+ */
+double
+lxw_unixtime_to_excel_date(int64_t unixtime)
+{
+    return lxw_unixtime_to_excel_date_epoch(unixtime, LXW_FALSE);
+}
+
+/*
+ * Convert a unix datetime (1970/01/01 epoch) to an Excel serial date, with a
+ * 1900 or 1904 epoch.
+ */
+double
+lxw_unixtime_to_excel_date_epoch(int64_t unixtime, uint8_t date_1904)
+{
+    double excel_datetime = 0.0;
+    int epoch = date_1904 ? 24107.0 : 25568.0;
+
+    excel_datetime = epoch + (unixtime / (24 * 60 * 60.0));
+
+    if (!date_1904 && excel_datetime >= 60.0)
+        excel_datetime = excel_datetime + 1.0;
+
+    return excel_datetime;
 }
 
 /* Simple strdup() implementation since it isn't ANSI C. */
@@ -547,27 +579,14 @@ lxw_tmpfile(char *tmpdir)
 }
 
 /*
- * Sample function to handle sprintf of doubles for locale portable code. This
- * is usually handled by a lxw_sprintf_dbl() macro but it can be replaced with
- * a function of the same name.
- *
- * The code below is a simplified example that changes numbers like 123,45 to
- * 123.45. End-users can replace this with something more rigorous if
- * required.
+ * Use third party function to handle sprintf of doubles for locale portable
+ * code.
  */
-#ifdef USE_DOUBLE_FUNCTION
+#ifdef USE_DTOA_LIBRARY
 int
 lxw_sprintf_dbl(char *data, double number)
 {
-    char *tmp;
-
-    lxw_snprintf(data, LXW_ATTR_32, "%.16g", number);
-
-    /* Replace comma with decimal point. */
-    tmp = strchr(data, ',');
-    if (tmp)
-        *tmp = '.';
-
+    emyg_dtoa(number, data);
     return 0;
 }
 #endif

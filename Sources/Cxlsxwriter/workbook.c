@@ -3,7 +3,7 @@
  *
  * Used in conjunction with the libxlsxwriter library.
  *
- * Copyright 2014-2020, John McNamara, jmcnamara@cpan.org. See LICENSE.txt.
+ * Copyright 2014-2021, John McNamara, jmcnamara@cpan.org. See LICENSE.txt.
  *
  */
 
@@ -244,6 +244,20 @@ lxw_workbook_free(lxw_workbook *workbook)
         free(workbook->header_image_md5s);
     }
 
+    if (workbook->background_md5s) {
+        for (image_md5 = RB_MIN(lxw_image_md5s, workbook->background_md5s);
+             image_md5; image_md5 = next_image_md5) {
+
+            next_image_md5 =
+                RB_NEXT(lxw_image_md5s, workbook->image_md5, image_md5);
+            RB_REMOVE(lxw_image_md5s, workbook->background_md5s, image_md5);
+            free(image_md5->md5);
+            free(image_md5);
+        }
+
+        free(workbook->background_md5s);
+    }
+
     lxw_hash_free(workbook->used_xf_formats);
     lxw_hash_free(workbook->used_dxf_formats);
     lxw_sst_free(workbook->sst);
@@ -251,7 +265,7 @@ lxw_workbook_free(lxw_workbook *workbook)
     free(workbook->ordered_charts);
     free(workbook->vba_project);
     free(workbook->vba_codename);
-   // free(workbook);
+    free(workbook);
 }
 
 /*
@@ -910,7 +924,7 @@ _populate_range_dimensions(lxw_workbook *self, lxw_series_range *range)
     /* Create a copy of the formula to modify and parse into parts. */
     lxw_snprintf(formula, LXW_MAX_FORMULA_RANGE_LENGTH, "%s", range->formula);
 
-    /* Check for valid formula. TODO. This needs stronger validation. */
+    /* Check for valid formula. Note, This needs stronger validation. */
     tmp_str = strchr(formula, '!');
 
     if (tmp_str == NULL) {
@@ -1002,6 +1016,25 @@ _add_chart_cache_data(lxw_workbook *self)
 }
 
 /*
+ * Store the image types used in the workbook to update the content types.
+ */
+STATIC void
+_store_image_type(lxw_workbook *self, uint8_t image_type)
+{
+    if (image_type == LXW_IMAGE_PNG)
+        self->has_png = LXW_TRUE;
+
+    if (image_type == LXW_IMAGE_JPEG)
+        self->has_jpeg = LXW_TRUE;
+
+    if (image_type == LXW_IMAGE_BMP)
+        self->has_bmp = LXW_TRUE;
+
+    if (image_type == LXW_IMAGE_GIF)
+        self->has_gif = LXW_TRUE;
+}
+
+/*
  * Iterate through the worksheets and set up any chart or image drawings.
  */
 STATIC void
@@ -1032,23 +1065,58 @@ _prepare_drawings(lxw_workbook *self)
 
         if (STAILQ_EMPTY(worksheet->image_props)
             && STAILQ_EMPTY(worksheet->chart_data)
-            && !worksheet->has_header_vml) {
+            && !worksheet->has_header_vml && !worksheet->has_background_image) {
             continue;
         }
 
         drawing_id++;
 
+        /* Prepare background images. */
+        if (worksheet->has_background_image) {
+
+            object_props = worksheet->background_image;
+
+            _store_image_type(self, object_props->image_type);
+
+            /* Check for duplicate images and only store the first instance. */
+            if (object_props->md5) {
+                tmp_image_md5.md5 = object_props->md5;
+                found_duplicate_image = RB_FIND(lxw_image_md5s,
+                                                self->background_md5s,
+                                                &tmp_image_md5);
+            }
+
+            if (found_duplicate_image) {
+                ref_id = found_duplicate_image->id;
+                object_props->is_duplicate = LXW_TRUE;
+            }
+            else {
+                image_ref_id++;
+                ref_id = image_ref_id;
+
+#ifndef USE_NO_MD5
+                new_image_md5 = calloc(1, sizeof(lxw_image_md5));
+#endif
+                if (new_image_md5 && object_props->md5) {
+                    new_image_md5->id = ref_id;
+                    new_image_md5->md5 = lxw_strdup(object_props->md5);
+
+                    RB_INSERT(lxw_image_md5s, self->background_md5s,
+                              new_image_md5);
+                }
+            }
+
+            lxw_worksheet_prepare_background(worksheet, ref_id, object_props);
+        }
+
         /* Prepare worksheet images. */
         STAILQ_FOREACH(object_props, worksheet->image_props, list_pointers) {
 
-            if (object_props->image_type == LXW_IMAGE_PNG)
-                self->has_png = LXW_TRUE;
+            /* Ignore background image added above. */
+            if (object_props->is_background)
+                continue;
 
-            if (object_props->image_type == LXW_IMAGE_JPEG)
-                self->has_jpeg = LXW_TRUE;
-
-            if (object_props->image_type == LXW_IMAGE_BMP)
-                self->has_bmp = LXW_TRUE;
+            _store_image_type(self, object_props->image_type);
 
             /* Check for duplicate images and only store the first instance. */
             if (object_props->md5) {
@@ -1099,14 +1167,7 @@ _prepare_drawings(lxw_workbook *self)
             if (!object_props)
                 continue;
 
-            if (object_props->image_type == LXW_IMAGE_PNG)
-                self->has_png = LXW_TRUE;
-
-            if (object_props->image_type == LXW_IMAGE_JPEG)
-                self->has_jpeg = LXW_TRUE;
-
-            if (object_props->image_type == LXW_IMAGE_BMP)
-                self->has_bmp = LXW_TRUE;
+            _store_image_type(self, object_props->image_type);
 
             /* Check for duplicate images and only store the first instance. */
             if (object_props->md5) {
@@ -1148,7 +1209,6 @@ _prepare_drawings(lxw_workbook *self)
 /*
  * Iterate through the worksheets and set up the VML objects.
  */
-
 STATIC void
 _prepare_vml(lxw_workbook *self)
 {
@@ -1349,6 +1409,34 @@ _prepare_defined_names(lxw_workbook *self)
     }
 }
 
+/*
+ * Iterate through the worksheets and set up the table objects.
+ */
+STATIC void
+_prepare_tables(lxw_workbook *self)
+{
+    lxw_worksheet *worksheet;
+    lxw_sheet *sheet;
+    uint32_t table_id = 0;
+    uint32_t table_count = 0;
+
+    STAILQ_FOREACH(sheet, self->sheets, list_pointers) {
+        if (sheet->is_chartsheet)
+            continue;
+        else
+            worksheet = sheet->u.worksheet;
+
+        table_count = worksheet->table_count;
+
+        if (table_count == 0)
+            continue;
+
+        lxw_worksheet_prepare_tables(worksheet, table_id + 1);
+
+        table_id += table_count;
+    }
+}
+
 /*****************************************************************************
  *
  * XML functions.
@@ -1406,6 +1494,26 @@ _write_file_version(lxw_workbook *self)
                                 "{37E998C4-C9E5-D4B9-71C8-EB1FF731991C}");
 
     lxw_xml_empty_tag(self->file, "fileVersion", &attributes);
+
+    LXW_FREE_ATTRIBUTES();
+}
+
+/*
+ * Write the <fileSharing> element.
+ */
+STATIC void
+_workbook_write_file_sharing(lxw_workbook *self)
+{
+    struct xml_attribute_list attributes;
+    struct xml_attribute *attribute;
+
+    if (self->read_only == 0)
+        return;
+
+    LXW_INIT_ATTRIBUTES();
+    LXW_PUSH_ATTRIBUTES_STR("readOnlyRecommended", "1");
+
+    lxw_xml_empty_tag(self->file, "fileSharing", &attributes);
 
     LXW_FREE_ATTRIBUTES();
 }
@@ -1608,6 +1716,9 @@ lxw_workbook_assemble_xml_file(lxw_workbook *self)
     /* Write the XLSX file version. */
     _write_file_version(self);
 
+    /* Write the fileSharing element. */
+    _workbook_write_file_sharing(self);
+
     /* Write the workbook properties. */
     _write_workbook_pr(self);
 
@@ -1701,10 +1812,15 @@ workbook_new_opt(const char *filename, lxw_workbook_options *options)
     GOTO_LABEL_ON_MEM_ERROR(workbook->image_md5s, mem_error);
     RB_INIT(workbook->image_md5s);
 
-    /* Add the image MD5 tree. */
+    /* Add the header image MD5 tree. */
     workbook->header_image_md5s = calloc(1, sizeof(struct lxw_image_md5s));
     GOTO_LABEL_ON_MEM_ERROR(workbook->header_image_md5s, mem_error);
     RB_INIT(workbook->header_image_md5s);
+
+    /* Add the background image MD5 tree. */
+    workbook->background_md5s = calloc(1, sizeof(struct lxw_image_md5s));
+    GOTO_LABEL_ON_MEM_ERROR(workbook->background_md5s, mem_error);
+    RB_INIT(workbook->background_md5s);
 
     /* Add the charts list. */
     workbook->charts = calloc(1, sizeof(struct lxw_charts));
@@ -1793,7 +1909,7 @@ workbook_add_worksheet(lxw_workbook *self, const char *sheetname)
     if (sheetname) {
         /* Use the user supplied name. */
         init_data.name = lxw_strdup(sheetname);
-        init_data.quoted_name = lxw_quote_sheetname((char *) sheetname);
+        init_data.quoted_name = lxw_quote_sheetname(sheetname);
     }
     else {
         /* Use the default SheetN name. */
@@ -1877,7 +1993,7 @@ workbook_add_chartsheet(lxw_workbook *self, const char *sheetname)
     if (sheetname) {
         /* Use the user supplied name. */
         init_data.name = lxw_strdup(sheetname);
-        init_data.quoted_name = lxw_quote_sheetname((char *) sheetname);
+        init_data.quoted_name = lxw_quote_sheetname(sheetname);
     }
     else {
         /* Use the default SheetN name. */
@@ -2007,7 +2123,7 @@ workbook_close(lxw_workbook *self)
         }
     }
 
-    /* Set the active sheet. */
+    /* Set the active sheet and check if a metadata file is needed. */
     STAILQ_FOREACH(sheet, self->sheets, list_pointers) {
         if (sheet->is_chartsheet)
             continue;
@@ -2016,6 +2132,9 @@ workbook_close(lxw_workbook *self)
 
         if (worksheet->index == self->active_sheet)
             worksheet->active = 1;
+
+        if (worksheet->has_dynamic_arrays)
+            self->has_metadata = LXW_TRUE;
     }
 
     /* Set workbook and worksheet VBA codenames if a macro has been added. */
@@ -2050,6 +2169,9 @@ workbook_close(lxw_workbook *self)
     /* Add cached data to charts. */
     _add_chart_cache_data(self);
 
+    /* Set the table ids for the worksheet tables. */
+    _prepare_tables(self);
+
     /* Create a packager object to assemble sub-elements into a zip file. */
     packager = lxw_packager_new(self->filename,
                                 self->options.tmpdir,
@@ -2057,9 +2179,9 @@ workbook_close(lxw_workbook *self)
 
     /* If the packager fails it is generally due to a zip permission error. */
     if (packager == NULL) {
-        fprintf(stderr, "[ERROR] workbook_close(): "
-                "Error creating '%s'. "
-                "System error = %s\n", self->filename, strerror(errno));
+        LXW_PRINTF(LXW_STDERR "[ERROR] workbook_close(): "
+                   "Error creating '%s'. "
+                   "System error = %s\n", self->filename, strerror(errno));
 
         error = LXW_ERROR_CREATING_XLSX_FILE;
         goto mem_error;
@@ -2073,49 +2195,50 @@ workbook_close(lxw_workbook *self)
 
     /* Error and non-error conditions fall through to the cleanup code. */
     if (error == LXW_ERROR_CREATING_TMPFILE) {
-        fprintf(stderr, "[ERROR] workbook_close(): "
-                "Error creating tmpfile(s) to assemble '%s'. "
-                "System error = %s\n", self->filename, strerror(errno));
+        LXW_PRINTF(LXW_STDERR "[ERROR] workbook_close(): "
+                   "Error creating tmpfile(s) to assemble '%s'. "
+                   "System error = %s\n", self->filename, strerror(errno));
     }
 
     /* If LXW_ERROR_ZIP_FILE_OPERATION then errno is set by zip. */
     if (error == LXW_ERROR_ZIP_FILE_OPERATION) {
-        fprintf(stderr, "[ERROR] workbook_close(): "
-                "Zip ZIP_ERRNO error while creating xlsx file '%s'. "
-                "System error = %s\n", self->filename, strerror(errno));
+        LXW_PRINTF(LXW_STDERR "[ERROR] workbook_close(): "
+                   "Zip ZIP_ERRNO error while creating xlsx file '%s'. "
+                   "System error = %s\n", self->filename, strerror(errno));
     }
 
     /* If LXW_ERROR_ZIP_PARAMETER_ERROR then errno is set by zip. */
     if (error == LXW_ERROR_ZIP_PARAMETER_ERROR) {
-        fprintf(stderr, "[ERROR] workbook_close(): "
-                "Zip ZIP_PARAMERROR error while creating xlsx file '%s'. "
-                "System error = %s\n", self->filename, strerror(errno));
+        LXW_PRINTF(LXW_STDERR "[ERROR] workbook_close(): "
+                   "Zip ZIP_PARAMERROR error while creating xlsx file '%s'. "
+                   "System error = %s\n", self->filename, strerror(errno));
     }
 
     /* If LXW_ERROR_ZIP_BAD_ZIP_FILE then errno is set by zip. */
     if (error == LXW_ERROR_ZIP_BAD_ZIP_FILE) {
-        fprintf(stderr, "[ERROR] workbook_close(): "
-                "Zip ZIP_BADZIPFILE error while creating xlsx file '%s'. "
-                "This may require the use_zip64 option for large files. "
-                "System error = %s\n", self->filename, strerror(errno));
+        LXW_PRINTF(LXW_STDERR "[ERROR] workbook_close(): "
+                   "Zip ZIP_BADZIPFILE error while creating xlsx file '%s'. "
+                   "This may require the use_zip64 option for large files. "
+                   "System error = %s\n", self->filename, strerror(errno));
     }
 
     /* If LXW_ERROR_ZIP_INTERNAL_ERROR then errno is set by zip. */
     if (error == LXW_ERROR_ZIP_INTERNAL_ERROR) {
-        fprintf(stderr, "[ERROR] workbook_close(): "
-                "Zip ZIP_INTERNALERROR error while creating xlsx file '%s'. "
-                "System error = %s\n", self->filename, strerror(errno));
+        LXW_PRINTF(LXW_STDERR "[ERROR] workbook_close(): "
+                   "Zip ZIP_INTERNALERROR error while creating xlsx file '%s'. "
+                   "System error = %s\n", self->filename, strerror(errno));
     }
 
     /* The next 2 error conditions don't set errno. */
     if (error == LXW_ERROR_ZIP_FILE_ADD) {
-        fprintf(stderr, "[ERROR] workbook_close(): "
-                "Zip error adding file to xlsx file '%s'.\n", self->filename);
+        LXW_PRINTF(LXW_STDERR "[ERROR] workbook_close(): "
+                   "Zip error adding file to xlsx file '%s'.\n",
+                   self->filename);
     }
 
     if (error == LXW_ERROR_ZIP_CLOSE) {
-        fprintf(stderr, "[ERROR] workbook_close(): "
-                "Zip error closing xlsx file '%s'.\n", self->filename);
+        LXW_PRINTF(LXW_STDERR "[ERROR] workbook_close(): "
+                   "Zip error closing xlsx file '%s'.\n", self->filename);
     }
 
 mem_error:
@@ -2542,4 +2665,13 @@ workbook_set_vba_name(lxw_workbook *self, const char *name)
     self->vba_codename = lxw_strdup(name);
 
     return LXW_NO_ERROR;
+}
+
+/*
+ * Set the Excel "Read-only recommended" save option.
+ */
+void
+workbook_read_only_recommended(lxw_workbook *self)
+{
+    self->read_only = 2;
 }

@@ -3,10 +3,11 @@
  *
  * Used in conjunction with the libxlsxwriter library.
  *
- * Copyright 2014-2020, John McNamara, jmcnamara@cpan.org. See LICENSE.txt.
+ * Copyright 2014-2021, John McNamara, jmcnamara@cpan.org. See LICENSE.txt.
  *
  */
 
+#include <zlib.h>
 #include "xlsxwriter/xmlwriter.h"
 #include "xlsxwriter/packager.h"
 #include "xlsxwriter/hash_table.h"
@@ -446,6 +447,85 @@ _get_drawing_count(lxw_packager *self)
 }
 
 /*
+ * Write the worksheet table files.
+ */
+STATIC lxw_error
+_write_table_files(lxw_packager *self)
+{
+    lxw_workbook *workbook = self->workbook;
+    lxw_sheet *sheet;
+    lxw_worksheet *worksheet;
+    lxw_table *table;
+    lxw_table_obj *table_obj;
+    lxw_error err;
+
+    char filename[LXW_FILENAME_LENGTH] = { 0 };
+    uint32_t index = 1;
+
+    STAILQ_FOREACH(sheet, workbook->sheets, list_pointers) {
+        if (sheet->is_chartsheet)
+            continue;
+        else
+            worksheet = sheet->u.worksheet;
+
+        if (STAILQ_EMPTY(worksheet->table_objs))
+            continue;
+
+        STAILQ_FOREACH(table_obj, worksheet->table_objs, list_pointers) {
+
+            lxw_snprintf(filename, LXW_FILENAME_LENGTH,
+                         "xl/tables/table%d.xml", index++);
+
+            table = lxw_table_new();
+            if (!table) {
+                err = LXW_ERROR_MEMORY_MALLOC_FAILED;
+                RETURN_ON_ERROR(err);
+            }
+
+            table->file = lxw_tmpfile(self->tmpdir);
+            if (!table->file) {
+                lxw_table_free(table);
+                return LXW_ERROR_CREATING_TMPFILE;
+            }
+
+            table->table_obj = table_obj;
+
+            lxw_table_assemble_xml_file(table);
+
+            err = _add_file_to_zip(self, table->file, filename);
+            fclose(table->file);
+            lxw_table_free(table);
+            RETURN_ON_ERROR(err);
+        }
+    }
+
+    return LXW_NO_ERROR;
+}
+
+/*
+ * Count  the table files.
+ */
+uint32_t
+_get_table_count(lxw_packager *self)
+{
+    lxw_workbook *workbook = self->workbook;
+    lxw_sheet *sheet;
+    lxw_worksheet *worksheet;
+    uint32_t table_count = 0;
+
+    STAILQ_FOREACH(sheet, workbook->sheets, list_pointers) {
+        if (sheet->is_chartsheet)
+            worksheet = sheet->u.chartsheet->worksheet;
+        else
+            worksheet = sheet->u.worksheet;
+
+        table_count += worksheet->table_count;
+    }
+
+    return table_count;
+}
+
+/*
  * Write the comment/header VML files.
  */
 STATIC lxw_error
@@ -484,6 +564,7 @@ _write_vml_files(lxw_packager *self)
             }
 
             vml->comment_objs = worksheet->comment_objs;
+            vml->button_objs = worksheet->button_objs;
             vml->vml_shape_id = worksheet->vml_shape_id;
             vml->comment_display_default = worksheet->comment_display_default;
 
@@ -706,6 +787,8 @@ _write_app_file(lxw_packager *self)
     /* Set the app/doc properties. */
     app->properties = workbook->properties;
 
+    app->doc_security = workbook->read_only;
+
     lxw_app_assemble_xml_file(app);
 
     err = _add_file_to_zip(self, app->file, "docProps/app.xml");
@@ -748,6 +831,43 @@ _write_core_file(lxw_packager *self)
 
 mem_error:
     lxw_core_free(core);
+
+    return err;
+}
+
+/*
+ * Write the metadata.xml file.
+ */
+STATIC lxw_error
+_write_metadata_file(lxw_packager *self)
+{
+    lxw_error err = LXW_NO_ERROR;
+    lxw_metadata *metadata;
+
+    if (!self->workbook->has_metadata)
+        return LXW_NO_ERROR;
+
+    metadata = lxw_metadata_new();
+
+    if (!metadata) {
+        err = LXW_ERROR_MEMORY_MALLOC_FAILED;
+        goto mem_error;
+    }
+
+    metadata->file = lxw_tmpfile(self->tmpdir);
+    if (!metadata->file) {
+        err = LXW_ERROR_CREATING_TMPFILE;
+        goto mem_error;
+    }
+
+    lxw_metadata_assemble_xml_file(metadata);
+
+    err = _add_file_to_zip(self, metadata->file, "xl/metadata.xml");
+
+    fclose(metadata->file);
+
+mem_error:
+    lxw_metadata_free(metadata);
 
     return err;
 }
@@ -907,6 +1027,7 @@ _write_content_types_file(lxw_packager *self)
     uint32_t chartsheet_index = 1;
     uint32_t drawing_count = _get_drawing_count(self);
     uint32_t chart_count = _get_chart_count(self);
+    uint32_t table_count = _get_table_count(self);
     lxw_error err = LXW_NO_ERROR;
 
     if (!content_types) {
@@ -928,6 +1049,9 @@ _write_content_types_file(lxw_packager *self)
 
     if (workbook->has_bmp)
         lxw_ct_add_default(content_types, "bmp", "image/bmp");
+
+    if (workbook->has_gif)
+        lxw_ct_add_default(content_types, "gif", "image/gif");
 
     if (workbook->vba_project)
         lxw_ct_add_default(content_types, "bin",
@@ -965,6 +1089,12 @@ _write_content_types_file(lxw_packager *self)
         lxw_ct_add_drawing_name(content_types, filename);
     }
 
+    for (index = 1; index <= table_count; index++) {
+        lxw_snprintf(filename, LXW_FILENAME_LENGTH,
+                     "/xl/tables/table%d.xml", index);
+        lxw_ct_add_table_name(content_types, filename);
+    }
+
     if (workbook->has_vml)
         lxw_ct_add_vml_name(content_types);
 
@@ -979,6 +1109,9 @@ _write_content_types_file(lxw_packager *self)
 
     if (!STAILQ_EMPTY(self->workbook->custom_properties))
         lxw_ct_add_custom_properties(content_types);
+
+    if (workbook->has_metadata)
+        lxw_ct_add_metadata(content_types);
 
     lxw_content_types_assemble_xml_file(content_types);
 
@@ -1043,6 +1176,9 @@ _write_workbook_rels_file(lxw_packager *self)
         lxw_add_ms_package_relationship(rels, "/vbaProject",
                                         "vbaProject.bin");
 
+    if (workbook->has_metadata)
+        lxw_add_document_relationship(rels, "/sheetMetadata", "metadata.xml");
+
     lxw_relationships_assemble_xml_file(rels);
 
     err = _add_file_to_zip(self, rels->file, "xl/_rels/workbook.xml.rels");
@@ -1081,8 +1217,10 @@ _write_worksheet_rels_file(lxw_packager *self)
 
         if (STAILQ_EMPTY(worksheet->external_hyperlinks) &&
             STAILQ_EMPTY(worksheet->external_drawing_links) &&
+            STAILQ_EMPTY(worksheet->external_table_links) &&
             !worksheet->external_vml_header_link &&
             !worksheet->external_vml_comment_link &&
+            !worksheet->external_background_link &&
             !worksheet->external_comment_link)
             continue;
 
@@ -1110,6 +1248,16 @@ _write_worksheet_rels_file(lxw_packager *self)
                                            rel->target_mode);
 
         rel = worksheet->external_vml_header_link;
+        if (rel)
+            lxw_add_worksheet_relationship(rels, rel->type, rel->target,
+                                           rel->target_mode);
+
+        STAILQ_FOREACH(rel, worksheet->external_table_links, list_pointers) {
+            lxw_add_worksheet_relationship(rels, rel->type, rel->target,
+                                           rel->target_mode);
+        }
+
+        rel = worksheet->external_background_link;
         if (rel)
             lxw_add_worksheet_relationship(rels, rel->type, rel->target,
                                            rel->target_mode);
@@ -1159,7 +1307,6 @@ _write_chartsheet_rels_file(lxw_packager *self)
 
         index++;
 
-        /* TODO. This should never be empty. Put check higher up. */
         if (STAILQ_EMPTY(worksheet->external_drawing_links))
             continue;
 
@@ -1474,6 +1621,9 @@ lxw_create_package(lxw_packager *self)
     error = _write_comment_files(self);
     RETURN_AND_ZIPCLOSE_ON_ERROR(error);
 
+    error = _write_table_files(self);
+    RETURN_AND_ZIPCLOSE_ON_ERROR(error);
+
     error = _write_shared_strings_file(self);
     RETURN_AND_ZIPCLOSE_ON_ERROR(error);
 
@@ -1502,6 +1652,9 @@ lxw_create_package(lxw_packager *self)
     RETURN_AND_ZIPCLOSE_ON_ERROR(error);
 
     error = _write_core_file(self);
+    RETURN_AND_ZIPCLOSE_ON_ERROR(error);
+
+    error = _write_metadata_file(self);
     RETURN_AND_ZIPCLOSE_ON_ERROR(error);
 
     error = _write_app_file(self);

@@ -1,7 +1,7 @@
 /*
  * libxlsxwriter
  *
- * Copyright 2014-2020, John McNamara, jmcnamara@cpan.org. See LICENSE.txt.
+ * Copyright 2014-2021, John McNamara, jmcnamara@cpan.org. See LICENSE.txt.
  */
 
 /**
@@ -229,7 +229,7 @@ typedef struct lxw_doc_properties {
  *
  * - `constant_memory`: This option reduces the amount of data stored in
  *   memory so that large files can be written efficiently. This option is off
- *   by default. See the note below for limitations when this mode is on.
+ *   by default. See the notes below for limitations when this mode is on.
  *
  * - `tmpdir`: libxlsxwriter stores workbook data in temporary files prior to
  *   assembling the final XLSX file. The temporary files are created in the
@@ -244,12 +244,19 @@ typedef struct lxw_doc_properties {
  *
  *   [zip64_wiki]: https://en.wikipedia.org/wiki/Zip_(file_format)#ZIP64
  *
- * @note In `constant_memory` mode a row of data is written and then discarded
- * when a cell in a new row is added via one of the `worksheet_write_*()`
- * functions. Therefore, once this option is active, data should be written in
- * sequential row order. For this reason the `worksheet_merge_range()` doesn't
- * work in this mode. See also @ref ww_mem_constant.
+ * @note In `constant_memory` mode each row of in-memory data is written to
+ * disk and then freed when a new row is started via one of the
+ * `worksheet_write_*()` functions. Therefore, once this option is active data
+ * should be written in sequential row by row order. For this reason
+ * `worksheet_merge_range()` and some other row based functionality doesn't
+ * work in this mode. See @ref ww_mem_constant for more details.
  *
+ * @note Also, in `constant_memory` mode the library uses temp file storage
+ * for worksheet data. This can lead to an issue on OSes that map the `/tmp`
+ * directory into memory since it is possible to consume the "system" memory
+ * even though the "process" memory remains constant. In these cases you
+ * should use an alternative temp file location by using the `tmpdir` option
+ * shown above. See @ref ww_mem_temp for more details.
  */
 typedef struct lxw_workbook_options {
     /** Optimize the workbook to use constant memory for worksheets. */
@@ -280,6 +287,7 @@ typedef struct lxw_workbook {
     struct lxw_chartsheet_names *chartsheet_names;
     struct lxw_image_md5s *image_md5s;
     struct lxw_image_md5s *header_image_md5s;
+    struct lxw_image_md5s *background_md5s;
     struct lxw_charts *charts;
     struct lxw_charts *ordered_charts;
     struct lxw_formats *formats;
@@ -307,12 +315,15 @@ typedef struct lxw_workbook {
     uint16_t fill_count;
     uint8_t optimize;
     uint16_t max_url_length;
+    uint8_t read_only;
 
     uint8_t has_png;
     uint8_t has_jpeg;
     uint8_t has_bmp;
+    uint8_t has_gif;
     uint8_t has_vml;
     uint8_t has_comments;
+    uint8_t has_metadata;
 
     lxw_hash_table *used_xf_formats;
     lxw_hash_table *used_dxf_formats;
@@ -389,12 +400,19 @@ lxw_workbook *workbook_new(const char *filename);
  *
  *   [zip64_wiki]: https://en.wikipedia.org/wiki/Zip_(file_format)#ZIP64
  *
- * @note In `constant_memory` mode a row of data is written and then discarded
- * when a cell in a new row is added via one of the `worksheet_write_*()`
- * functions. Therefore, once this option is active, data should be written in
- * sequential row order. For this reason the `worksheet_merge_range()` doesn't
- * work in this mode. See also @ref ww_mem_constant.
+ * @note In `constant_memory` mode each row of in-memory data is written to
+ * disk and then freed when a new row is started via one of the
+ * `worksheet_write_*()` functions. Therefore, once this option is active data
+ * should be written in sequential row by row order. For this reason
+ * `worksheet_merge_range()` and some other row based functionality doesn't
+ * work in this mode. See @ref ww_mem_constant for more details.
  *
+ * @note Also, in `constant_memory` mode the library uses temp file storage
+ * for worksheet data. This can lead to an issue on OSes that map the `/tmp`
+ * directory into memory since it is possible to consume the "system" memory
+ * even though the "process" memory remains constant. In these cases you
+ * should use an alternative temp file location by using the `tmpdir` option
+ * shown above. See @ref ww_mem_temp for more details.
  */
 lxw_workbook *workbook_new_opt(const char *filename,
                                lxw_workbook_options *options);
@@ -969,6 +987,27 @@ lxw_error workbook_add_vba_project(lxw_workbook *workbook,
  * @return A #lxw_error.
  */
 lxw_error workbook_set_vba_name(lxw_workbook *workbook, const char *name);
+
+/**
+ * @brief Add a recommendation to open the file in "read-only" mode.
+ *
+ * @param workbook Pointer to a lxw_workbook instance.
+ *
+ * This function can be used to set the Excel "Read-only Recommended" option
+ * that is available when saving a file. This presents the user of the file
+ * with an option to open it in "read-only" mode. This means that any changes
+ * to the file can't be saved back to the same file and must be saved to a new
+ * file. It can be set as follows:
+ *
+ * @code
+ *     workbook_read_only_recommended(workbook);
+ * @endcode
+ *
+ * Which will raise a dialog like the following when opening the file:
+ *
+ * @image html read_only.png
+ */
+void workbook_read_only_recommended(lxw_workbook *workbook);
 
 void lxw_workbook_free(lxw_workbook *workbook);
 void lxw_workbook_assemble_xml_file(lxw_workbook *workbook);

@@ -1,7 +1,7 @@
 /*
  * libxlsxwriter
  *
- * Copyright 2014-2020, John McNamara, jmcnamara@cpan.org. See LICENSE.txt.
+ * Copyright 2014-2021, John McNamara, jmcnamara@cpan.org. See LICENSE.txt.
  *
  * packager - A libxlsxwriter library for creating Excel XLSX packager files.
  *
@@ -24,6 +24,7 @@
 #include "app.h"
 #include "core.h"
 #include "custom.h"
+#include "table.h"
 #include "theme.h"
 #include "styles.h"
 #include "format.h"
@@ -31,22 +32,25 @@
 #include "relationships.h"
 #include "vml.h"
 #include "comment.h"
+#include "metadata.h"
 
 #define LXW_ZIP_BUFFER_SIZE (16384)
 
 /* If zip returns a ZIP_XXX error then errno is set and we can trap that in
  * workbook.c. Otherwise return a default libxlsxwriter error. */
-#define RETURN_ON_ZIP_ERROR(err, default_err)   \
-    if (err == ZIP_ERRNO)                       \
-        return LXW_ERROR_ZIP_FILE_OPERATION;    \
-    else if (err == ZIP_PARAMERROR)             \
-        return LXW_ERROR_ZIP_PARAMETER_ERROR;   \
-    else if (err == ZIP_BADZIPFILE)             \
-        return LXW_ERROR_ZIP_BAD_ZIP_FILE;      \
-    else if (err == ZIP_INTERNALERROR)          \
-        return LXW_ERROR_ZIP_INTERNAL_ERROR;    \
-    else                                        \
-        return default_err;
+#define RETURN_ON_ZIP_ERROR(err, default_err)       \
+    do {                                            \
+        if (err == ZIP_ERRNO)                       \
+            return LXW_ERROR_ZIP_FILE_OPERATION;    \
+        else if (err == ZIP_PARAMERROR)             \
+            return LXW_ERROR_ZIP_PARAMETER_ERROR;   \
+        else if (err == ZIP_BADZIPFILE)             \
+            return LXW_ERROR_ZIP_BAD_ZIP_FILE;      \
+        else if (err == ZIP_INTERNALERROR)          \
+            return LXW_ERROR_ZIP_INTERNAL_ERROR;    \
+        else                                        \
+            return default_err;                     \
+    } while (0)
 
 /*
  * Struct to represent a packager.

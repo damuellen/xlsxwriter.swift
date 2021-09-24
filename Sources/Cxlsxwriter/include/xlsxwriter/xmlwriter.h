@@ -1,7 +1,7 @@
 /*
  * libxlsxwriter
  *
- * Copyright 2014-2020, John McNamara, jmcnamara@cpan.org. See LICENSE.txt.
+ * Copyright 2014-2021, John McNamara, jmcnamara@cpan.org. See LICENSE.txt.
  *
  * xmlwriter - A libxlsxwriter library for creating Excel XLSX
  *             XML files.
@@ -85,11 +85,13 @@ struct xml_attribute *lxw_new_attribute_dbl(const char *key, double value);
 
 /* Macro to free xml_attribute_list and attribute. */
 #define LXW_FREE_ATTRIBUTES()                                 \
-    while (!STAILQ_EMPTY(&attributes)) {                      \
-        attribute = STAILQ_FIRST(&attributes);                \
-        STAILQ_REMOVE_HEAD(&attributes, list_entries);        \
-        free(attribute);                                      \
-    }
+    do {                                                      \
+        while (!STAILQ_EMPTY(&attributes)) {                  \
+            attribute = STAILQ_FIRST(&attributes);            \
+            STAILQ_REMOVE_HEAD(&attributes, list_entries);    \
+            free(attribute);                                  \
+        }                                                     \
+    } while (0)
 
 /**
  * Create the XML declaration in an XML file.

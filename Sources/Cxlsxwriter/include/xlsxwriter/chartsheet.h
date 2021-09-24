@@ -1,7 +1,7 @@
 /*
  * libxlsxwriter
  *
- * Copyright 2014-2020, John McNamara, jmcnamara@cpan.org. See LICENSE.txt.
+ * Copyright 2014-2021, John McNamara, jmcnamara@cpan.org. See LICENSE.txt.
  *
  * chartsheet - A libxlsxwriter library for creating Excel XLSX chartsheet files.
  *
@@ -83,7 +83,7 @@ typedef struct lxw_chartsheet {
     char *name;
     char *quoted_name;
     char *tmpdir;
-    uint32_t index;
+    uint16_t index;
     uint8_t active;
     uint8_t selected;
     uint8_t hidden;

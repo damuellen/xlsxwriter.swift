@@ -8,13 +8,13 @@ import Foundation
 
 /// Struct to represent an Excel worksheet.
 public struct Worksheet {
-  
+
   let lxw_worksheet: UnsafeMutablePointer<lxw_worksheet>
-  
+
   var name: String {
     String(cString: lxw_worksheet.pointee.name)
   }
-  
+
   init(_ lxw_worksheet: UnsafeMutablePointer<lxw_worksheet>) {
     self.lxw_worksheet = lxw_worksheet
   }
@@ -24,12 +24,12 @@ public struct Worksheet {
     worksheet_insert_chart(lxw_worksheet, r, c, chart.lxw_chart)
     return self
   }
-  
+
   /// Insert a chart object into a worksheet, with options.
   public func insert(chart: Chart, _ pos: (row: Int, col: Int), scale: (x: Double, y: Double)) -> Worksheet {
     let r = UInt32(pos.row), c = UInt16(pos.col)
     var o = lxw_chart_options(
-      x_offset: 0, y_offset: 0, x_scale: scale.x, y_scale: scale.y, object_position: 2
+      x_offset: 0, y_offset: 0, x_scale: scale.x, y_scale: scale.y, object_position: 2, decorative: 0
     )
     worksheet_insert_chart_opt(lxw_worksheet, r, c, chart.lxw_chart, &o)
     return self
@@ -46,7 +46,7 @@ public struct Worksheet {
     }
     return self
   }
-  
+
   /// Write a row of data starting from (row, col).
   @discardableResult
   public func write(row values: [Value], _ cell: Cell, format: Format? = nil) -> Worksheet {
@@ -58,7 +58,7 @@ public struct Worksheet {
     }
     return self
   }
-  
+
   /// Write a row of Double values starting from (row, col).
   @discardableResult
   public func write(_ numbers: [Double], row: Int, col: Int = 0, format: Format? = nil) -> Worksheet {
@@ -71,7 +71,7 @@ public struct Worksheet {
     }
     return self
   }
-  
+
   /// Write a row of String values starting from (row, col).
   @discardableResult
   public func write(_ strings: [String], row: Int, col: Int = 0, format: Format? = nil) -> Worksheet {
@@ -84,7 +84,7 @@ public struct Worksheet {
     }
     return self
   }
-  
+
   /// Write data to a worksheet cell by calling the appropriate
   /// worksheet_write_*() method based on the type of data being passed.
   @discardableResult

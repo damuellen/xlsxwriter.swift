@@ -3,7 +3,7 @@
  *
  * Used in conjunction with the libxlsxwriter library.
  *
- * Copyright 2014-2020, John McNamara, jmcnamara@cpan.org. See LICENSE.txt.
+ * Copyright 2014-2021, John McNamara, jmcnamara@cpan.org. See LICENSE.txt.
  *
  */
 
@@ -466,7 +466,7 @@ _chart_set_default_marker_type(lxw_chart *self, uint8_t type)
 /*
  * Set an axis number format.
  */
-void
+STATIC void
 _chart_axis_set_default_num_format(lxw_chart_axis *axis, char *num_format)
 {
     if (!num_format)
@@ -1141,6 +1141,11 @@ _chart_write_a_body_pr(lxw_chart *self, int32_t rotation,
             /* 271 deg/East Asian vertical. */
             LXW_PUSH_ATTRIBUTES_STR("rot", "0");
             LXW_PUSH_ATTRIBUTES_STR("vert", "eaVert");
+        }
+        else if (rotation == 21600000) {
+            /* 360 deg = 0 for y axis. */
+            LXW_PUSH_ATTRIBUTES_STR("rot", "0");
+            LXW_PUSH_ATTRIBUTES_STR("vert", "horz");
         }
         else {
             LXW_PUSH_ATTRIBUTES_INT("rot", rotation);
@@ -3318,7 +3323,9 @@ _chart_write_crosses(lxw_chart *self, lxw_chart_axis *axis)
 
     LXW_INIT_ATTRIBUTES();
 
-    if (axis->crossing_max)
+    if (axis->crossing_min)
+        LXW_PUSH_ATTRIBUTES_STR("val", "min");
+    else if (axis->crossing_max)
         LXW_PUSH_ATTRIBUTES_STR("val", "max");
     else
         LXW_PUSH_ATTRIBUTES_STR("val", "autoZero");
@@ -4261,7 +4268,8 @@ _chart_write_cat_axis(lxw_chart *self)
     _chart_write_cross_axis(self, self->axis_id_2);
 
     /* Write the c:crosses element. */
-    if (!self->y_axis->has_crossing || self->y_axis->crossing_max)
+    if (!self->y_axis->has_crossing || self->y_axis->crossing_min
+        || self->y_axis->crossing_max)
         _chart_write_crosses(self, self->y_axis);
     else
         _chart_write_crosses_at(self, self->y_axis);
@@ -4342,7 +4350,8 @@ _chart_write_val_axis(lxw_chart *self)
     _chart_write_cross_axis(self, self->axis_id_1);
 
     /* Write the c:crosses element. */
-    if (!self->x_axis->has_crossing || self->x_axis->crossing_max)
+    if (!self->x_axis->has_crossing || self->x_axis->crossing_min
+        || self->x_axis->crossing_max)
         _chart_write_crosses(self, self->x_axis);
     else
         _chart_write_crosses_at(self, self->x_axis);
@@ -4420,7 +4429,8 @@ _chart_write_cat_val_axis(lxw_chart *self)
     _chart_write_cross_axis(self, self->axis_id_2);
 
     /* Write the c:crosses element. */
-    if (!self->y_axis->has_crossing || self->y_axis->crossing_max)
+    if (!self->y_axis->has_crossing || self->y_axis->crossing_min
+        || self->y_axis->crossing_max)
         _chart_write_crosses(self, self->y_axis);
     else
         _chart_write_crosses_at(self, self->y_axis);
@@ -4654,17 +4664,15 @@ _chart_write_scatter_chart(lxw_chart *self)
 
         /* Add default scatter chart formatting to the series data unless
          * it has already been specified by the user.*/
-        if (self->type == LXW_CHART_SCATTER) {
-            if (!series->line) {
-                lxw_chart_line line = {
-                    0x000000,
-                    LXW_TRUE,
-                    2.25,
-                    LXW_CHART_LINE_DASH_SOLID,
-                    0
-                };
-                series->line = _chart_convert_line_args(&line);
-            }
+        if (self->type == LXW_CHART_SCATTER && !series->line) {
+            lxw_chart_line line = {
+                0x000000,
+                LXW_TRUE,
+                2.25,
+                LXW_CHART_LINE_DASH_SOLID,
+                0
+            };
+            series->line = _chart_convert_line_args(&line);
         }
 
         /* Write the c:ser element. */
@@ -6139,7 +6147,17 @@ chart_axis_set_crossing(lxw_chart_axis *axis, double value)
 }
 
 /*
- * Set the axis crossing position as the max possible value.
+ * Set the axis crossing position as the minimum possible value.
+ */
+void
+chart_axis_set_crossing_min(lxw_chart_axis *axis)
+{
+    axis->has_crossing = LXW_TRUE;
+    axis->crossing_min = LXW_TRUE;
+}
+
+/*
+ * Set the axis crossing position as the maximum possible value.
  */
 void
 chart_axis_set_crossing_max(lxw_chart_axis *axis)

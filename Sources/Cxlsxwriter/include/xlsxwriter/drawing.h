@@ -1,7 +1,7 @@
 /*
  * libxlsxwriter
  *
- * Copyright 2014-2020, John McNamara, jmcnamara@cpan.org. See LICENSE.txt.
+ * Copyright 2014-2021, John McNamara, jmcnamara@cpan.org. See LICENSE.txt.
  *
  * drawing - A libxlsxwriter library for creating Excel XLSX drawing files.
  *
@@ -27,7 +27,8 @@ enum image_types {
     LXW_IMAGE_UNKNOWN = 0,
     LXW_IMAGE_PNG,
     LXW_IMAGE_JPEG,
-    LXW_IMAGE_BMP
+    LXW_IMAGE_BMP,
+    LXW_IMAGE_GIF
 };
 
 /* Coordinates used in a drawing object. */
@@ -53,6 +54,7 @@ typedef struct lxw_drawing_object {
     uint32_t url_rel_index;
     char *description;
     char *tip;
+    uint8_t decorative;
 
     STAILQ_ENTRY (lxw_drawing_object) list_pointers;
 

@@ -1,7 +1,7 @@
 /*
  * libxlsxwriter
  *
- * Copyright 2014-2020, John McNamara, jmcnamara@cpan.org. See LICENSE.txt.
+ * Copyright 2014-2021, John McNamara, jmcnamara@cpan.org. See LICENSE.txt.
  *
  * chart - A libxlsxwriter library for creating Excel XLSX chart files.
  *
@@ -713,9 +713,12 @@ typedef struct lxw_chart_font {
     /** The chart font underline property. Set to 0 or 1. */
     uint8_t underline;
 
-    /** The chart font rotation property. Range: -90 to 90, and 270-271.
-     *  The angle 270 gives a stacked (top to bottom) alignment.
-     *  The angle 271 gives a stacked alignment for East Asian fonts.
+    /** The chart font rotation property. Range: -90 to 90, and 270, 271 and 360:
+     *
+     *  - The angles -90 to 90 are the normal range shown in the Excel user interface.
+     *  - The angle 270 gives a stacked (top to bottom) alignment.
+     *  - The angle 271 gives a stacked alignment for East Asian fonts.
+     *  - The angle 360 gives an explicit angle of 0 to override the y axis default.
      * */
     int32_t rotation;
 
@@ -1072,6 +1075,7 @@ typedef struct lxw_chart_axis {
     uint8_t display_units_visible;
 
     uint8_t has_crossing;
+    uint8_t crossing_min;
     uint8_t crossing_max;
     double crossing;
 
@@ -2701,6 +2705,26 @@ void chart_axis_set_crossing(lxw_chart_axis *axis, double value);
 void chart_axis_set_crossing_max(lxw_chart_axis *axis);
 
 /**
+ * @brief Set the opposite axis crossing position as the axis minimum.
+ *
+ * @param axis  A pointer to a chart #lxw_chart_axis object.
+ *
+ * Set the position that the opposite axis will cross as the axis minimum.
+ * The default axis crossing position is generally the axis minimum so this
+ * function can be used to reverse the location of the axes without reversing
+ * the number sequence:
+ *
+ * @code
+ *     chart_axis_set_crossing_min(chart->x_axis);
+ *     chart_axis_set_crossing_min(chart->y_axis);
+ * @endcode
+ *
+ * **Axis types**: This function is applicable to to all axes types.
+ *                 See @ref ww_charts_axes.
+ */
+void chart_axis_set_crossing_min(lxw_chart_axis *axis);
+
+/**
  * @brief Turn off/hide an axis.
  *
  * @param axis A pointer to a chart #lxw_chart_axis object.
@@ -3211,13 +3235,27 @@ void chart_title_set_name_range(lxw_chart *chart, const char *sheetname,
  * chart title:
  *
  * @code
- *     lxw_chart_font font = {.bold = LXW_TRUE, .color = LXW_COLOR_BLUE};
+ *     lxw_chart_font font = {.color = LXW_COLOR_BLUE};
  *
  *     chart_title_set_name(chart, "Year End Results");
  *     chart_title_set_name_font(chart, &font);
  * @endcode
  *
  * @image html chart_title_set_name_font.png
+ *
+ * In Excel a chart title font is bold by default (as shown in the image
+ * above). To turn off bold in the font you cannot use #LXW_FALSE (0) since
+ * that is indistinguishable from an uninitialized value. Instead you should
+ * use #LXW_EXPLICIT_FALSE:
+ *
+ * @code
+ *     lxw_chart_font font = {.bold = LXW_EXPLICIT_FALSE, .color = LXW_COLOR_BLUE};
+ *
+ *     chart_title_set_name(chart, "Year End Results");
+ *     chart_title_set_name_font(chart, &font);
+ * @endcode
+ *
+ * @image html chart_title_set_name_font2.png
  *
  * For more information see @ref chart_fonts.
  */
