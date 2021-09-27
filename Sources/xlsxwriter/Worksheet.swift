@@ -200,12 +200,18 @@ public struct Worksheet {
   }
     /// Set a table in the worksheet.
   @discardableResult
-  public func table(range: Range) -> Worksheet {
+  public func table(range: Range, header: [String] = []) -> Worksheet {
     var options = lxw_table_options()
     options.style_type = UInt8(LXW_TABLE_STYLE_TYPE_LIGHT.rawValue)
     options.style_type_number = 8
     options.total_row = 1
-  
+    var column = lxw_table_column()
+    let columns = UnsafeMutablePointer<UnsafeMutablePointer<lxw_table_column>?>.allocate(capacity: header.count+1)
+    for (index, name) in header.enumerated() { 
+      column.header = makeCString(from: name)
+      columns.advanced(by: index).pointee?.initialize(to: column)
+    }
+    options.columns = columns
     worksheet_add_table(lxw_worksheet, range.row, range.col, range.row2, range.col2, &options)
     return self
   }
