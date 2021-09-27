@@ -198,4 +198,22 @@ public struct Worksheet {
     worksheet_gridlines(lxw_worksheet, UInt8((print ? 2 : 0) + (screen ? 1 : 0)))
     return self
   }
+    /// Set a table in the worksheet.
+  @discardableResult
+  public func table(range: Range) -> Worksheet {
+    var options = lxw_table_options()
+    options.style_type = UInt8(LXW_TABLE_STYLE_TYPE_LIGHT.rawValue)
+    options.style_type_number = 8
+    options.total_row = 1
+  
+    worksheet_add_table(lxw_worksheet, range.row, range.col, range.row2, range.col2, &options)
+    return self
+  }
+}
+
+fileprivate func makeCString(from str: String) -> UnsafeMutablePointer<CChar> {
+  let count = str.utf8.count + 1
+  let result = UnsafeMutablePointer<CChar>.allocate(capacity: count)
+  str.withCString { result.initialize(from: $0, count: count) }
+  return result
 }
