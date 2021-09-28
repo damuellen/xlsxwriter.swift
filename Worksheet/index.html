@@ -25,7 +25,7 @@
     <nav>
         <div class="wrapper">
             <h2>On This Page</h2>
-            <ol><li><a href="#methods">Methods</a><ul><li class="function"><a href="#worksheet.insert(chart:_:)">insert(chart:​_:​)</a></li><li class="function"><a href="#worksheet.insert(chart:_:scale:)">insert(chart:​_:​scale:​)</a></li><li class="function"><a href="#worksheet.write(column:_:format:)">write(column:​_:​format:​)</a></li><li class="function"><a href="#worksheet.write(row:_:format:)">write(row:​_:​format:​)</a></li><li class="function"><a href="#worksheet.write(_:row:col:format:)">write(_:​row:​col:​format:​)</a></li><li class="function"><a href="#worksheet.write(_:row:col:format:)">write(_:​row:​col:​format:​)</a></li><li class="function"><a href="#worksheet.write(_:_:format:)">write(_:​_:​format:​)</a></li><li class="function"><a href="#worksheet.select()">select()</a></li><li class="function"><a href="#worksheet.hide()">hide()</a></li><li class="function"><a href="#worksheet.activate()">activate()</a></li><li class="function"><a href="#worksheet.hide_zero()">hide_zero()</a></li><li class="function"><a href="#worksheet.paper(type:)">paper(type:​)</a></li><li class="function"><a href="#worksheet.column(_:width:format:)">column(_:​width:​format:​)</a></li><li class="function"><a href="#worksheet.hide_columns(_:width:)">hide_columns(_:​width:​)</a></li><li class="function"><a href="#worksheet.tab(color:)">tab(color:​)</a></li><li class="function"><a href="#worksheet.set_default(row_height:hide_unused_rows:)">set_default(row_height:​hide_unused_rows:​)</a></li><li class="function"><a href="#worksheet.print_area(range:)">print_area(range:​)</a></li><li class="function"><a href="#worksheet.autofilter(range:)">autofilter(range:​)</a></li><li class="function"><a href="#worksheet.gridline(screen:print:)">gridline(screen:​print:​)</a></li><li class="function"><a href="#worksheet.table(range:header:)">table(range:​header:​)</a></li></ul></li></ol>
+            <ol><li><a href="#methods">Methods</a><ul><li class="function"><a href="#worksheet.insert(chart:_:)">insert(chart:​_:​)</a></li><li class="function"><a href="#worksheet.insert(chart:_:scale:)">insert(chart:​_:​scale:​)</a></li><li class="function"><a href="#worksheet.write(column:_:format:)">write(column:​_:​format:​)</a></li><li class="function"><a href="#worksheet.write(row:_:format:)">write(row:​_:​format:​)</a></li><li class="function"><a href="#worksheet.write(_:row:col:format:)">write(_:​row:​col:​format:​)</a></li><li class="function"><a href="#worksheet.write(_:row:col:format:)">write(_:​row:​col:​format:​)</a></li><li class="function"><a href="#worksheet.write(_:_:format:)">write(_:​_:​format:​)</a></li><li class="function"><a href="#worksheet.select()">select()</a></li><li class="function"><a href="#worksheet.hide()">hide()</a></li><li class="function"><a href="#worksheet.activate()">activate()</a></li><li class="function"><a href="#worksheet.hide_zero()">hide_zero()</a></li><li class="function"><a href="#worksheet.paper(type:)">paper(type:​)</a></li><li class="function"><a href="#worksheet.column(_:width:format:)">column(_:​width:​format:​)</a></li><li class="function"><a href="#worksheet.hide_columns(_:width:)">hide_columns(_:​width:​)</a></li><li class="function"><a href="#worksheet.tab(color:)">tab(color:​)</a></li><li class="function"><a href="#worksheet.set_default(row_height:hide_unused_rows:)">set_default(row_height:​hide_unused_rows:​)</a></li><li class="function"><a href="#worksheet.print_area(range:)">print_area(range:​)</a></li><li class="function"><a href="#worksheet.autofilter(range:)">autofilter(range:​)</a></li><li class="function"><a href="#worksheet.gridline(screen:print:)">gridline(screen:​print:​)</a></li><li class="function"><a href="#worksheet.table(range:name:header:totalrow:)">table(range:​name:​header:​total​Row:​)</a></li></ul></li></ol>
         </div>
     </nav>
 
@@ -293,13 +293,13 @@ worksheet_write_*() method based on the type of data being passed.</p>
 
 </div>
 </div>
-<div role="article" class="function" id="worksheet.table(range:header:)">
+<div role="article" class="function" id="worksheet.table(range:name:header:totalrow:)">
     <h3>
-        <code><a href="#worksheet.table(range:header:)">table(range:​header:​)</a></code>
+        <code><a href="#worksheet.table(range:name:header:totalrow:)">table(range:​name:​header:​total​Row:​)</a></code>
     </h3>
     <div class="declaration">
 <pre class="highlight"><code><html><body><span class="attribute">@</span><span class="attribute">discardableResult</span>
-  <span class="keyword">public</span> <span class="keyword">func</span> <span class="function">table</span>(<span class="variable">range</span>: <a href="https://damuellen.github.io/xlsxwriter.swift/Range"><span class="type">Range</span></a>, <span class="variable">header</span>: [<span class="type">String</span>] = []) -&gt; <a href="https://damuellen.github.io/xlsxwriter.swift/Worksheet"><span class="type">Worksheet</span></a>  </body></html></code></pre>
+  <span class="keyword">public</span> <span class="keyword">func</span> <span class="function">table</span>(<span class="variable">range</span>: <a href="https://damuellen.github.io/xlsxwriter.swift/Range"><span class="type">Range</span></a>, <span class="variable">name</span>: <span class="type">String</span>? = <span class="keyword">nil</span>, <span class="variable">header</span>: [<span class="type">String</span>] = [], <span class="variable">totalRow</span>: <span class="type">Bool</span> = <span class="keyword">false</span>) -&gt; <a href="https://damuellen.github.io/xlsxwriter.swift/Worksheet"><span class="type">Worksheet</span></a>  </body></html></code></pre>
 </div>
 <div class="summary" role="doc-abstract">
     <p>Set a table in the worksheet.</p>
@@ -315,7 +315,7 @@ worksheet_write_*() method based on the type of data being passed.</p>
 
     <footer>
         <p>
-    Generated on <time datetime="2021-09-27T22:06:26+0000">September 27, 2021</time> using <a href="https://github.com/SwiftDocOrg/swift-doc">swift-doc</a> <span class="version">1.0.0-rc.1</span>.
+    Generated on <time datetime="2021-09-28T14:40:44+0000">September 28, 2021</time> using <a href="https://github.com/SwiftDocOrg/swift-doc">swift-doc</a> <span class="version">1.0.0-rc.1</span>.
 </p>
     </footer>
 </body>
