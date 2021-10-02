@@ -7,7 +7,7 @@ import Cxlsxwriter
 import Foundation
 
 /// Struct to represent an Excel worksheet.
-public struct Worksheet {
+public final class Worksheet {
 
   let lxw_worksheet: UnsafeMutablePointer<lxw_worksheet>
 
@@ -198,6 +198,7 @@ public struct Worksheet {
     worksheet_gridlines(lxw_worksheet, UInt8((print ? 2 : 0) + (screen ? 1 : 0)))
     return self
   }
+  private var table_columns = [lxw_table_column]()
     /// Set a table in the worksheet.
   @discardableResult
   public func table(range: Range, name: String? = nil, header: [String] = [], totalRow: Bool = false) -> Worksheet {
@@ -211,10 +212,10 @@ public struct Worksheet {
     options.total_row = totalRow ? 1 : 0
 
     let buffer = UnsafeMutableBufferPointer<UnsafeMutablePointer<lxw_table_column>?>.allocate(capacity: header.count+1)
-    var columns = Array(repeating: lxw_table_column(), count: header.count)
+    table_columns = Array(repeating: lxw_table_column(), count: header.count)
     for i in header.indices {
-      columns[i].header = makeCString(from: header[i])
-      withUnsafeMutablePointer(to: &columns[i]) {
+      table_columns[i].header = makeCString(from: header[i])
+      withUnsafeMutablePointer(to: &table_columns[i]) {
         buffer.baseAddress?.advanced(by: i).pointee = $0
       }
     }
