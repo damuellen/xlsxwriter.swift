@@ -5,7 +5,7 @@
 
 import Cxlsxwriter
 
-/// Struct to represent an Excel worksheet.
+/// Class to represent an Excel worksheet.
 public final class Worksheet {
   private var lxw_worksheet: lxw_worksheet
   var name: String { String(cString: lxw_worksheet.name) }
@@ -22,7 +22,7 @@ public final class Worksheet {
     let r = UInt32(pos.row)
     let c = UInt16(pos.col)
     var o = lxw_chart_options(x_offset: 0, y_offset: 0, x_scale: scale.x, y_scale: scale.y, object_position: 2, description: nil, decorative: 0)
-    withUnsafeMutablePointer(to: &lxw_worksheet) { worksheet_insert_chart_opt($0, r, c, chart.lxw_chart, &o) }
+    _ = withUnsafeMutablePointer(to: &lxw_worksheet) { worksheet_insert_chart_opt($0, r, c, chart.lxw_chart, &o) }
     return self
   }
   /// Write a column of data starting from (row, col).

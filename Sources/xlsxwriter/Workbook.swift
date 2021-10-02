@@ -5,12 +5,12 @@
 
 import Cxlsxwriter
 
-/// Struct to represent an Excel workbook.
+/// Class to represent an Excel workbook.
 public final class Workbook {
-  var lxw_workbook: UnsafeMutablePointer<lxw_workbook>
+  private var lxw_workbook: UnsafeMutablePointer<lxw_workbook>
 
   /// Create a new workbook object.
-  public init(name: String) { self.lxw_workbook = name.withCString { workbook_new($0) } }
+  public init(name: String) { self.lxw_workbook = workbook_new(name.cString(using: .utf8)) }
   /// Close the Workbook object and write the XLSX file.
   public func close() {
     let error = workbook_close(lxw_workbook)
