@@ -5,12 +5,12 @@
 
 import Cxlsxwriter
 
-/// Class to represent an Excel workbook.
-public final class Workbook {
-  private var lxw_workbook: UnsafeMutablePointer<lxw_workbook>
+/// Struct to represent an Excel workbook.
+public struct Workbook {
+  var lxw_workbook: UnsafeMutablePointer<lxw_workbook>
 
   /// Create a new workbook object.
-  public init(name: String) { self.lxw_workbook = workbook_new(name.cString(using: .utf8)) }
+  public init(name: String) { self.lxw_workbook = name.withCString { workbook_new($0) } }
   /// Close the Workbook object and write the XLSX file.
   public func close() {
     let error = workbook_close(lxw_workbook)
@@ -24,7 +24,7 @@ public final class Workbook {
     } else {
       worksheet = workbook_add_worksheet(lxw_workbook, nil)
     }
-    return Worksheet(worksheet.pointee)
+    return Worksheet(worksheet)
   }
   /// Add a new chartsheet to a workbook.
   public func addChartsheet(name: String? = nil) -> Chartsheet {
@@ -34,7 +34,7 @@ public final class Workbook {
     } else {
       chartsheet = workbook_add_chartsheet(lxw_workbook, nil)
     }
-    return Chartsheet(chartsheet.pointee)
+    return Chartsheet(chartsheet)
   }
   /// Add a new format to the Excel workbook.
   public func addFormat() -> Format { Format(workbook_add_format(lxw_workbook)) }
@@ -43,12 +43,12 @@ public final class Workbook {
   /// Get a worksheet object from its name.
   public subscript(worksheet name: String) -> Worksheet? {
     guard let ws = name.withCString({ s in workbook_get_worksheet_by_name(lxw_workbook, s) }) else { return nil }
-    return Worksheet(ws.pointee)
+    return Worksheet(ws)
   }
   /// Get a chartsheet object from its name.
   public subscript(chartsheet name: String) -> Chartsheet? {
     guard let cs = name.withCString({ s in workbook_get_chartsheet_by_name(lxw_workbook, s) }) else { return nil }
-    return Chartsheet(cs.pointee)
+    return Chartsheet(cs)
   }
   /// Validate a worksheet or chartsheet name.
   func validate(sheet_name: String) { let _ = sheet_name.withCString { workbook_validate_sheet_name(lxw_workbook, $0) } }
