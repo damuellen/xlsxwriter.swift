@@ -180,9 +180,9 @@ public struct Worksheet {
       }
       options.columns = buffer.baseAddress
     } 
-    withExtendedLifetime(table_columns) {
-      _ = worksheet_add_table(lxw_worksheet, range.row, range.col, range.row2, range.col2, &options) 
-    }
+    _ = worksheet_add_table(lxw_worksheet, range.row, range.col, range.row2, range.col2, &options)
+    if let _ = name { options.name.deallocate() }
+    table_columns.forEach { $0.header.deallocate() }
     return self
   }
 }
