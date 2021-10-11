@@ -4,7 +4,7 @@ import XCTest
 final class xlsxwriterTests: XCTestCase {
   func testExample() {
  // Create a new workbook
-    let wb = Workbook(name: "demo.xlsx")
+    let wb = Workbook(name: "demo3.xlsx")
     // defer { wb.close() }
     
     // Add a format.
@@ -23,9 +23,6 @@ final class xlsxwriterTests: XCTestCase {
       .addWorksheet()
       .tab(color: .blue)
       .set_default(row_height: 25)
-      .write("Number", "A1", format: f)
-      .write("Batch 1", "B1", format: f)
-      .write("Batch 2", "C1", format: f)
       .column("A:C", width: 30)
       .gridline(screen: false)
     
@@ -33,7 +30,10 @@ final class xlsxwriterTests: XCTestCase {
     let data = (1...100).map {
       [Double($0), Double.random(in: 10...100), Double.random(in: 20...50)]
     }
-    
+    ws.table(
+      range: "A1:C101", name: "bal",
+      header: [("Number", f), ("Batch 1", f), ("Batch 2", f)]
+    )
     // Write data to add to plot on the chart.
     data.enumerated().forEach {
       ws.write($0.element, row: $0.offset + 1, format: f2)

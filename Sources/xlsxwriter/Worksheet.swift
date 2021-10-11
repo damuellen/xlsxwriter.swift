@@ -161,14 +161,19 @@ public struct Worksheet {
     worksheet_gridlines(lxw_worksheet, UInt8((print ? 2 : 0) + (screen ? 1 : 0))) 
     return self
   }
-   
+
   /// Set a table in the worksheet.
-  @discardableResult public func table(range: Range, name: String? = nil, header: [String] = [], totalRow: Bool = false) -> Worksheet {
+  @discardableResult public func table(range: Range, name: String? = nil, header: [(String, Format?)] = []) -> Worksheet {  
+    table(range: range, name: name, header: header.map { $0.0 }, format: header.map { $0.1 }, totalRow: [])
+  }
+
+  /// Set a table in the worksheet.
+  @discardableResult public func table(range: Range, name: String? = nil, header: [String] = [], format: [Format?] = [], totalRow: [TotalFunction] = []) -> Worksheet {
     var options = lxw_table_options()
     if let name = name { options.name = makeCString(from: name) }
     options.style_type = UInt8(LXW_TABLE_STYLE_TYPE_MEDIUM.rawValue)
     options.style_type_number = 7
-    options.banded_columns = UInt8(LXW_TRUE.rawValue)
+    options.total_row = totalRow.isEmpty ? UInt8(LXW_FALSE.rawValue) : UInt8(LXW_TRUE.rawValue)
     var table_columns = [lxw_table_column]()
     let buffer = UnsafeMutableBufferPointer<UnsafeMutablePointer<lxw_table_column>?>.allocate(capacity: header.count + 1)
     defer { buffer.deallocate() }
@@ -176,16 +181,23 @@ public struct Worksheet {
       table_columns = Array(repeating: lxw_table_column(), count: header.count)
       for i in header.indices {
         table_columns[i].header = makeCString(from: header[i])
+        if format.endIndex > i { 
+          table_columns[i].header_format = format[i]?.lxw_format
+        }
+        if totalRow.endIndex > i {
+          table_columns[i].total_function = totalRow[i].rawValue
+        }
         withUnsafeMutablePointer(to: &table_columns[i]) { buffer.baseAddress?.advanced(by: i).pointee = $0 }
       }
       options.columns = buffer.baseAddress
-    } 
-    _ = worksheet_add_table(lxw_worksheet, range.row, range.col, range.row2, range.col2, &options)
+    }
+    _ = worksheet_add_table(lxw_worksheet, range.row, range.col, range.row2 + (totalRow.isEmpty ?0:1), range.col2, &options)
     if let _ = name { options.name.deallocate() }
     table_columns.forEach { $0.header.deallocate() }
     return self
   }
 }
+
 
 private func makeCString(from str: String) -> UnsafeMutablePointer<CChar> {
   let count = str.utf8.count + 1
