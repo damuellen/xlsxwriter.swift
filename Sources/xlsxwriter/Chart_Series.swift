@@ -20,6 +20,29 @@ public struct Chart {
     if let name = name { series.set(name: name) }
     return series
   }
+
+  /// Remove/hide one or more series in a chart legend (the series will still display on the chart).
+  @discardableResult public func remove(legends: Int...) -> Chart {
+    var array = legends.map { Int16($0) }
+    array.append(-1)
+    chart_legend_delete_series(lxw_chart, &array)
+    return self
+  }
+
+  /// Set the minimum and maximum value for the axis range.
+  @discardableResult public func set(x_axis: ClosedRange<Double>) -> Chart {
+    chart_axis_set_min(lxw_chart.pointee.x_axis, x_axis.lowerBound)
+    chart_axis_set_max(lxw_chart.pointee.x_axis, x_axis.upperBound)
+    return self
+  }
+
+  /// Set the minimum and maximum value for the axis range.
+  @discardableResult public func set(y_axis: ClosedRange<Double>) -> Chart {
+    chart_axis_set_min(lxw_chart.pointee.y_axis, y_axis.lowerBound)
+    chart_axis_set_max(lxw_chart.pointee.y_axis, y_axis.upperBound)
+    return self
+  }
+
   /// Set the name caption of the x axis.
   @discardableResult public func set(x_axis name: String) -> Chart {
     name.withCString { chart_axis_set_name(lxw_chart.pointee.x_axis, $0) }
@@ -100,6 +123,14 @@ public struct Series {
     let _ = name.withCString { chart_series_set_name(lxw_chart_series, $0) }
     return self
   }
+
+  /// The function is used to specify the the series marker:
+  @discardableResult public func set(marker: Int, size: Int) -> Series {
+    chart_series_set_marker_type(lxw_chart_series, UInt8(marker))
+    chart_series_set_marker_size(lxw_chart_series, UInt8(size))
+    return self
+  }
+
   /// Set a series "values" range using row and column values.
   @discardableResult public func values(sheet: Worksheet, range: Range) -> Series {
     let _ = sheet.name.withCString { chart_series_set_values(lxw_chart_series, $0, range.row, range.col, range.row2, range.col2) }
