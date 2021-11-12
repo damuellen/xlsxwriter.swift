@@ -25,7 +25,7 @@
     <nav>
         <div class="wrapper">
             <h2>On This Page</h2>
-            <ol><li><a href="#methods">Methods</a><ul><li class="function"><a href="#chart.addseries(values:name:)">add​Series(values:​name:​)</a></li><li class="function"><a href="#chart.set(x_axis:)">set(x_axis:​)</a></li><li class="function"><a href="#chart.set(y_axis:)">set(y_axis:​)</a></li><li class="function"><a href="#chart.title(name:)">title(name:​)</a></li><li class="function"><a href="#chart.axis_off(_:)">axis_off(_:​)</a></li><li class="function"><a href="#chart.major_gridlines(_:visible:)">major_gridlines(_:​visible:​)</a></li><li class="function"><a href="#chart.minor_gridlines(_:visible:)">minor_gridlines(_:​visible:​)</a></li><li class="function"><a href="#chart.title_off()">title_off()</a></li><li class="function"><a href="#chart.legend(position:)">legend(position:​)</a></li><li class="function"><a href="#chart.set(rotation:)">set(rotation:​)</a></li><li class="function"><a href="#chart.table(style:)">table(style:​)</a></li><li class="function"><a href="#chart.set(style:)">set(style:​)</a></li></ul></li></ol>
+            <ol><li><a href="#methods">Methods</a><ul><li class="function"><a href="#chart.addseries(values:name:)">add​Series(values:​name:​)</a></li><li class="function"><a href="#chart.remove(legends:)">remove(legends:​)</a></li><li class="function"><a href="#chart.set(x_axis:)">set(x_axis:​)</a></li><li class="function"><a href="#chart.set(y_axis:)">set(y_axis:​)</a></li><li class="function"><a href="#chart.set(x_axis:)">set(x_axis:​)</a></li><li class="function"><a href="#chart.set(y_axis:)">set(y_axis:​)</a></li><li class="function"><a href="#chart.title(name:)">title(name:​)</a></li><li class="function"><a href="#chart.axis_off(_:)">axis_off(_:​)</a></li><li class="function"><a href="#chart.major_gridlines(_:visible:)">major_gridlines(_:​visible:​)</a></li><li class="function"><a href="#chart.minor_gridlines(_:visible:)">minor_gridlines(_:​visible:​)</a></li><li class="function"><a href="#chart.title_off()">title_off()</a></li><li class="function"><a href="#chart.legend(position:)">legend(position:​)</a></li><li class="function"><a href="#chart.set(rotation:)">set(rotation:​)</a></li><li class="function"><a href="#chart.table(style:)">table(style:​)</a></li><li class="function"><a href="#chart.set(style:)">set(style:​)</a></li></ul></li></ol>
         </div>
     </nav>
 
@@ -56,6 +56,42 @@
 </div>
 <div class="summary" role="doc-abstract">
     <p>Add a data series to a chart.</p>
+
+</div>
+</div>
+<div role="article" class="function" id="chart.remove(legends:)">
+    <h3>
+        <code><a href="#chart.remove(legends:)">remove(legends:​)</a></code>
+    </h3>
+    <div class="declaration">
+<pre class="highlight"><code><html><body><span class="attribute">@</span><span class="attribute">discardableResult</span> <span class="keyword">public</span> <span class="keyword">func</span> <span class="function">remove</span>(<span class="variable">legends</span>: <span class="type">Int</span>...) -&gt; <a href="https://damuellen.github.io/xlsxwriter.swift/Chart"><span class="type">Chart</span></a>  </body></html></code></pre>
+</div>
+<div class="summary" role="doc-abstract">
+    <p>Remove/hide one or more series in a chart legend (the series will still display on the chart).</p>
+
+</div>
+</div>
+<div role="article" class="function" id="chart.set(x_axis:)">
+    <h3>
+        <code><a href="#chart.set(x_axis:)">set(x_axis:​)</a></code>
+    </h3>
+    <div class="declaration">
+<pre class="highlight"><code><html><body><span class="attribute">@</span><span class="attribute">discardableResult</span> <span class="keyword">public</span> <span class="keyword">func</span> <span class="function">set</span>(<span class="variable">x_axis</span>: <span class="type">ClosedRange</span>&lt;<span class="type">Double</span>&gt;) -&gt; <a href="https://damuellen.github.io/xlsxwriter.swift/Chart"><span class="type">Chart</span></a>  </body></html></code></pre>
+</div>
+<div class="summary" role="doc-abstract">
+    <p>Set the minimum and maximum value for the axis range.</p>
+
+</div>
+</div>
+<div role="article" class="function" id="chart.set(y_axis:)">
+    <h3>
+        <code><a href="#chart.set(y_axis:)">set(y_axis:​)</a></code>
+    </h3>
+    <div class="declaration">
+<pre class="highlight"><code><html><body><span class="attribute">@</span><span class="attribute">discardableResult</span> <span class="keyword">public</span> <span class="keyword">func</span> <span class="function">set</span>(<span class="variable">y_axis</span>: <span class="type">ClosedRange</span>&lt;<span class="type">Double</span>&gt;) -&gt; <a href="https://damuellen.github.io/xlsxwriter.swift/Chart"><span class="type">Chart</span></a>  </body></html></code></pre>
+</div>
+<div class="summary" role="doc-abstract">
+    <p>Set the minimum and maximum value for the axis range.</p>
 
 </div>
 </div>
@@ -200,7 +236,7 @@
 
     <footer>
         <p>
-    Generated on <time datetime="2021-10-24T19:23:37+0000">October 24, 2021</time> using <a href="https://github.com/SwiftDocOrg/swift-doc">swift-doc</a> <span class="version">1.0.0-rc.1</span>.
+    Generated on <time datetime="2021-11-12T13:23:56+0000">November 12, 2021</time> using <a href="https://github.com/SwiftDocOrg/swift-doc">swift-doc</a> <span class="version">1.0.0-rc.1</span>.
 </p>
     </footer>
 </body>
