@@ -13,7 +13,7 @@ let package = Package(
   targets: [
     .target(name: "xlsxwriter", dependencies: ["Cxlsxwriter"]), 
     .target(name: "Cxlsxwriter", dependencies: ["Cmd5", "Ctmpfileplus", "Cminizip"]),
-    .target(name: "Cminizip", linkerSettings: [.linkedLibrary("z")]),
+    .target(name: "Cminizip"),
     .target(name: "Ctmpfileplus"), .target(name: "Cmd5"),
     .testTarget(name: "xlsxwriterTests", dependencies: ["xlsxwriter"]),
   ]
@@ -26,5 +26,13 @@ if let xlsxwriter = package.targets.first(where: { $0.name == "Cxlsxwriter" }) {
     .forEach { $0.cxxSettings = [.define("_CRT_SECURE_NO_WARNINGS")] }
   #else
   xlsxwriter.linkerSettings = [.linkedLibrary("z")]
+  #endif
+}
+
+if let minizip = package.targets.first(where: { $0.name == "Cminizip" }) {
+  #if os(Windows)
+  minizip.linkerSettings = [.linkedLibrary("zlibstatic.lib")]
+  #else
+  minizip.linkerSettings = [.linkedLibrary("z")]
   #endif
 }
