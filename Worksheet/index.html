@@ -25,7 +25,7 @@
     <nav>
         <div class="wrapper">
             <h2>On This Page</h2>
-            <ol><li><a href="#methods">Methods</a><ul><li class="function"><a href="#worksheet.insert(chart:_:)">insert(chart:​_:​)</a></li><li class="function"><a href="#worksheet.insert(chart:_:scale:)">insert(chart:​_:​scale:​)</a></li><li class="function"><a href="#worksheet.write(column:_:format:)">write(column:​_:​format:​)</a></li><li class="function"><a href="#worksheet.write(row:_:format:)">write(row:​_:​format:​)</a></li><li class="function"><a href="#worksheet.write(_:row:col:format:)">write(_:​row:​col:​format:​)</a></li><li class="function"><a href="#worksheet.write(_:row:col:format:)">write(_:​row:​col:​format:​)</a></li><li class="function"><a href="#worksheet.write(_:_:format:)">write(_:​_:​format:​)</a></li><li class="function"><a href="#worksheet.select()">select()</a></li><li class="function"><a href="#worksheet.hide()">hide()</a></li><li class="function"><a href="#worksheet.activate()">activate()</a></li><li class="function"><a href="#worksheet.hide_zero()">hide_zero()</a></li><li class="function"><a href="#worksheet.paper(type:)">paper(type:​)</a></li><li class="function"><a href="#worksheet.column(_:width:format:)">column(_:​width:​format:​)</a></li><li class="function"><a href="#worksheet.hide_columns(_:width:)">hide_columns(_:​width:​)</a></li><li class="function"><a href="#worksheet.tab(color:)">tab(color:​)</a></li><li class="function"><a href="#worksheet.set_default(row_height:hide_unused_rows:)">set_default(row_height:​hide_unused_rows:​)</a></li><li class="function"><a href="#worksheet.print_area(range:)">print_area(range:​)</a></li><li class="function"><a href="#worksheet.autofilter(range:)">autofilter(range:​)</a></li><li class="function"><a href="#worksheet.gridline(screen:print:)">gridline(screen:​print:​)</a></li><li class="function"><a href="#worksheet.table(range:name:header:)">table(range:​name:​header:​)</a></li><li class="function"><a href="#worksheet.table(range:name:header:format:totalrow:)">table(range:​name:​header:​format:​total​Row:​)</a></li></ul></li></ol>
+            <ol><li><a href="#methods">Methods</a><ul><li class="function"><a href="#worksheet.insert(chart:_:)">insert(chart:​_:​)</a></li><li class="function"><a href="#worksheet.insert(chart:_:scale:)">insert(chart:​_:​scale:​)</a></li><li class="function"><a href="#worksheet.write(column:_:format:)">write(column:​_:​format:​)</a></li><li class="function"><a href="#worksheet.write(row:_:format:)">write(row:​_:​format:​)</a></li><li class="function"><a href="#worksheet.write(_:row:col:format:)">write(_:​row:​col:​format:​)</a></li><li class="function"><a href="#worksheet.write(_:row:col:format:)">write(_:​row:​col:​format:​)</a></li><li class="function"><a href="#worksheet.write(_:_:format:)">write(_:​_:​format:​)</a></li><li class="function"><a href="#worksheet.select()">select()</a></li><li class="function"><a href="#worksheet.hide()">hide()</a></li><li class="function"><a href="#worksheet.activate()">activate()</a></li><li class="function"><a href="#worksheet.hide_zero()">hide_zero()</a></li><li class="function"><a href="#worksheet.paper(type:)">paper(type:​)</a></li><li class="function"><a href="#worksheet.column(_:width:format:)">column(_:​width:​format:​)</a></li><li class="function"><a href="#worksheet.hide_columns(_:width:)">hide_columns(_:​width:​)</a></li><li class="function"><a href="#worksheet.tab(color:)">tab(color:​)</a></li><li class="function"><a href="#worksheet.set_default(row_height:hide_unused_rows:)">set_default(row_height:​hide_unused_rows:​)</a></li><li class="function"><a href="#worksheet.print_area(range:)">print_area(range:​)</a></li><li class="function"><a href="#worksheet.autofilter(range:)">autofilter(range:​)</a></li><li class="function"><a href="#worksheet.gridline(screen:print:)">gridline(screen:​print:​)</a></li><li class="function"><a href="#worksheet.table(range:name:header:)">table(range:​name:​header:​)</a></li><li class="function"><a href="#worksheet.merge(range:string:format:)">merge(range:​string:​format:​)</a></li><li class="function"><a href="#worksheet.table(range:name:header:format:totalrow:)">table(range:​name:​header:​format:​total​Row:​)</a></li></ul></li></ol>
         </div>
     </nav>
 
@@ -288,6 +288,18 @@ worksheet_write_*() method based on the type of data being passed.</p>
 
 </div>
 </div>
+<div role="article" class="function" id="worksheet.merge(range:string:format:)">
+    <h3>
+        <code><a href="#worksheet.merge(range:string:format:)">merge(range:​string:​format:​)</a></code>
+    </h3>
+    <div class="declaration">
+<pre class="highlight"><code><html><body><span class="attribute">@</span><span class="attribute">discardableResult</span> <span class="keyword">public</span> <span class="keyword">func</span> <span class="function">merge</span>(<span class="variable">range</span>: <a href="https://damuellen.github.io/xlsxwriter.swift/Range"><span class="type">Range</span></a>, <span class="variable">string</span>: <span class="type">String</span>, <span class="variable">format</span>: <a href="https://damuellen.github.io/xlsxwriter.swift/Format"><span class="type">Format</span></a>? = <span class="keyword">nil</span>) -&gt; <a href="https://damuellen.github.io/xlsxwriter.swift/Worksheet"><span class="type">Worksheet</span></a>  </body></html></code></pre>
+</div>
+<div class="summary" role="doc-abstract">
+    <p>Merge a range of cells in the worksheet.</p>
+
+</div>
+</div>
 <div role="article" class="function" id="worksheet.table(range:name:header:format:totalrow:)">
     <h3>
         <code><a href="#worksheet.table(range:name:header:format:totalrow:)">table(range:​name:​header:​format:​total​Row:​)</a></code>
@@ -309,7 +321,7 @@ worksheet_write_*() method based on the type of data being passed.</p>
 
     <footer>
         <p>
-    Generated on <time datetime="2021-12-10T11:57:22+0000">December 10, 2021</time> using <a href="https://github.com/SwiftDocOrg/swift-doc">swift-doc</a> <span class="version">1.0.0-rc.1</span>.
+    Generated on <time datetime="2021-12-29T18:07:58+0000">December 29, 2021</time> using <a href="https://github.com/SwiftDocOrg/swift-doc">swift-doc</a> <span class="version">1.0.0-rc.1</span>.
 </p>
     </footer>
 </body>
