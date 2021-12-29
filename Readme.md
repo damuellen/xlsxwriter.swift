@@ -13,14 +13,14 @@ let ws = wb.addWorksheet()
 // Add a format.
 let format = wb.addFormat()
 
-// Set the bold property for the format 
-format.set_bold()
+// Set the bold property for the format
+format.bold()
 
-// Write some simple text. 
-ws.write(.string("Hello"), (0, 0))
+// Write some simple text.
+ws.write(.string("Hello"), [0, 0])
 
 // Text with formatting.
-ws.write(.string("World"), (0, 1), format: format)
+ws.write(.string("World"), [0, 1], format: format)
 
 ```
 
