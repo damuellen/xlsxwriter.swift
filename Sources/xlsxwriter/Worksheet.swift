@@ -167,6 +167,12 @@ public struct Worksheet {
     table(range: range, name: name, header: header.map { $0.0 }, format: header.map { $0.1 }, totalRow: [])
   }
 
+  /// Merge a range of cells in the worksheet.
+  @discardableResult public func merge(range: Range, string: String, format: Format? = nil) -> Worksheet {  
+    worksheet_merge_range(lxw_worksheet, range.row, range.col, range.row2, range.col2, string, format?.lxw_format)
+    return self
+  }
+
   /// Set a table in the worksheet.
   @discardableResult public func table(range: Range, name: String? = nil, header: [String] = [], format: [Format?] = [], totalRow: [TotalFunction] = []) -> Worksheet {
     var options = lxw_table_options()
