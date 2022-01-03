@@ -17,4 +17,4 @@ jobs:
         with:
           ref: windows
 
-      - run: swift build
+      - run: swift build -Xswifc -LC:/vcpkg/installed/x64-windows/lib
