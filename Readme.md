@@ -24,6 +24,29 @@ ws.write(.string("World"), [0, 1], format: format)
 
 ```
 
+## Installation
+
+Install Libxlswriter first. See [Getting started](https://libxlsxwriter.github.io/getting_started.html).
+
+### Swift Package Manager
+
+The [Swift Package Manager](https://swift.org/package-manager) is a tool for managing the distribution of
+Swift code.
+
+1. Add the following to your `Package.swift` file:
+
+  ```swift
+  dependencies: [
+      .package(url: "https://github.com/damuellen/xlsxwriter.swift", from: "0.4.0")
+  ]
+  ```
+
+2. Build your project:
+
+  ```sh
+  $ swift build
+  ```
+
 ## The libxlsxwriter library
 
 Libxlsxwriter is a C library that can be used to write text, numbers, formulas
