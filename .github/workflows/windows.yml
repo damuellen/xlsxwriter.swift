@@ -17,8 +17,8 @@ jobs:
 
       - uses: compnerd/gha-setup-swift@main
         with:
-          branch: swift-5.5-release
-          tag: 5.5-RELEASE
+          branch: swift-5.5.2-release
+          tag: 5.5.2-RELEASE
 
       - uses: actions/checkout@v2
         with:
