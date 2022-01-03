@@ -24,4 +24,4 @@ jobs:
         with:
           ref: vcpkg
 
-      - run: swift test
+      - run: swift test -Xswifc -LC:/vcpkg/installed/x64-windows/lib
