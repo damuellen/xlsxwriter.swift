@@ -15,6 +15,6 @@ jobs:
 
       - uses: actions/checkout@v2
         with:
-          ref: windows
+          ref: vcpkg
 
-      - run: swift build
+      - run: swift test
