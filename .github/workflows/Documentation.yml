@@ -22,7 +22,7 @@ jobs:
         working-directory: ./libxlsxwriter
         run: |
           make
-          make install
+          sudo make install
 
       - name: Build Debug mode
         run: swift build 
