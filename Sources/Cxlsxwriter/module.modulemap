@@ -1,0 +1,5 @@
+module Cxlsxwriter [system] {
+  header "/usr/local/include/xlsxwriter.h"
+  link "xlsxwriter"
+  export *
+}
