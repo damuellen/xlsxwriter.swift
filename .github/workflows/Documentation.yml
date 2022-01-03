@@ -11,7 +11,19 @@ jobs:
     steps:
       - name: Checkout 
         uses: actions/checkout@v2
-                  
+
+      - name: Checkout libxlsxwriter
+        uses: actions/checkout@v2
+        with: 
+          repository: jmcnamara/libxlsxwriter
+          path: libxlsxwriter
+          
+      - name: Build libxlsxwriter
+        working-directory: ./libxlsxwriter
+        run: |
+          make
+          make install
+
       - name: Build Debug mode
         run: swift build 
 
