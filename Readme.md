@@ -37,7 +37,7 @@ Swift code.
 
   ```swift
   dependencies: [
-      .package(url: "https://github.com/damuellen/xlsxwriter.swift", from: "0.4.0")
+      .package(url: "https://github.com/damuellen/xlsxwriter.swift", from: "1.0.0")
   ]
   ```
 
