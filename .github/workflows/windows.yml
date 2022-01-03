@@ -10,7 +10,9 @@ jobs:
     steps:
 
       - name: vcpkg install libxlsxwriter
-        run: vcpkg install libxlsxwriter:x64-windows
+        run: |
+          vcpkg install libxlsxwriter:x64-windows
+          vcpkg integrate install
         continue-on-error: true
 
       - uses: compnerd/gha-setup-swift@main
