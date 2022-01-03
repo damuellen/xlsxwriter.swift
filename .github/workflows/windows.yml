@@ -8,6 +8,11 @@ jobs:
   windows:
     runs-on: windows-latest
     steps:
+
+      - name: vcpkg install libxlsxwriter
+        run: vcpkg install libxlsxwriter:x64-windows
+        continue-on-error: true
+
       - uses: compnerd/gha-setup-swift@main
         with:
           branch: swift-5.5-release
