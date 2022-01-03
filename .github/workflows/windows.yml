@@ -24,7 +24,8 @@ jobs:
         with:
           ref: vcpkg
 
-      - run: swift build -c release -Xswiftc -LC:/vcpkg/installed/x64-windows/lib/
+      - name: Build swift .dll in release mode
+        run: swift build -c release -Xswiftc -LC:/vcpkg/installed/x64-windows/lib/
         continue-on-error: true
 
       - name: Upload build artifacts
@@ -32,7 +33,5 @@ jobs:
         continue-on-error: true
         with:
           name: xlsxwriter-win32-x64
-          path: |
-            .build\x86_64-unknown-windows-msvc\release\*.dll
-            C:\vcpkg\installed\x64-windows\bin\*.dll
-            C:\vcpkg\installed\x64-windows\lib\*
+          path: .build\x86_64-unknown-windows-msvc\release\*.dll
+
