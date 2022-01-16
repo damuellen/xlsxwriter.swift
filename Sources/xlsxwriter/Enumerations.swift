@@ -189,7 +189,11 @@ public enum TotalFunction: UInt8, ExpressibleByIntegerLiteral {
     /** Use the sum function as the table total. */
    case sum = 109
 
-   public init(integerLiteral value: Int) { 
-     self = .init(rawValue: UInt8(value)) ?? .none 
+   public init(integerLiteral value: Int) {
+     if let function = TotalFunction(rawValue: UInt8(value)) {
+       self = function
+     } else {
+       self = .none
+     }
    }
 }
