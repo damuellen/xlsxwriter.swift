@@ -9,7 +9,9 @@ import Cxlsxwriter
 
 public struct Cell: ExpressibleByStringLiteral, ExpressibleByArrayLiteral {
   let row: UInt32, col: UInt16
-  public init(stringLiteral value: String) { (self.row, self.col) = value.withCString { (lxw_name_to_row($0), lxw_name_to_col($0)) } }
+  public init(stringLiteral value: String) {
+    (self.row, self.col) = value.withCString { (lxw_name_to_row($0), lxw_name_to_col($0)) }
+  }
   public init(arrayLiteral elements: Int...) {
     precondition(elements.count == 2, "[row, col]")
     self.row = UInt32(elements[0])
@@ -23,7 +25,9 @@ public struct Cell: ExpressibleByStringLiteral, ExpressibleByArrayLiteral {
 
 public struct Cols: ExpressibleByStringLiteral, ExpressibleByArrayLiteral {
   let col: UInt16, col2: UInt16
-  public init(stringLiteral value: String) { (self.col, self.col2) = value.withCString { (lxw_name_to_col($0), lxw_name_to_col_2($0)) } }
+  public init(stringLiteral value: String) {
+    (self.col, self.col2) = value.withCString { (lxw_name_to_col($0), lxw_name_to_col_2($0)) }
+  }
   public init(arrayLiteral elements: Int...) {
     precondition(elements.count == 2, "[col, col2]")
     self.col = UInt16(elements[0])

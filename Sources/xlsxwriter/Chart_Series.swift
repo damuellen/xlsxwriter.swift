@@ -117,7 +117,9 @@ public struct Chart {
 public struct Series {
 
   let lxw_chart_series: UnsafeMutablePointer<lxw_chart_series>
-  init(_ lxw_chart_series: UnsafeMutablePointer<lxw_chart_series>) { self.lxw_chart_series = lxw_chart_series }
+  init(_ lxw_chart_series: UnsafeMutablePointer<lxw_chart_series>) {
+    self.lxw_chart_series = lxw_chart_series
+  }
   /// Set the name of a chart series range.
   @discardableResult public func set(name: String) -> Series {
     let _ = name.withCString { chart_series_set_name(lxw_chart_series, $0) }
@@ -133,12 +135,17 @@ public struct Series {
 
   /// Set a series "values" range using row and column values.
   @discardableResult public func values(sheet: Worksheet, range: Range) -> Series {
-    let _ = sheet.name.withCString { chart_series_set_values(lxw_chart_series, $0, range.row, range.col, range.row2, range.col2) }
+    let _ = sheet.name.withCString {
+      chart_series_set_values(lxw_chart_series, $0, range.row, range.col, range.row2, range.col2)
+    }
     return self
   }
   /// Set a series "categories" range using row and column values.
   @discardableResult public func categories(sheet: Worksheet, range: Range) -> Series {
-    let _ = sheet.name.withCString { chart_series_set_categories(lxw_chart_series, $0, range.row, range.col, range.row2, range.col2) }
+    let _ = sheet.name.withCString {
+      chart_series_set_categories(
+        lxw_chart_series, $0, range.row, range.col, range.row2, range.col2)
+    }
     return self
   }
   /// Smooth a line or scatter chart series.
@@ -149,7 +156,9 @@ public struct Series {
   }
   /// Set a series name formula using row and column values.
   @discardableResult public func name(sheet: Worksheet, cell: Cell) -> Series {
-    let _ = sheet.name.withCString { chart_series_set_name_range(lxw_chart_series, $0, cell.row, cell.col) }
+    let _ = sheet.name.withCString {
+      chart_series_set_name_range(lxw_chart_series, $0, cell.row, cell.col)
+    }
     return self
   }
   /// Turn on a trendline for a chart data series.
@@ -163,11 +172,15 @@ public struct Series {
     return self
   }
   /// Set the trendline line properties for a chart data series.
-  @discardableResult public func trendline(color: Color = .black, width: Float = 2.25, dash_type: Int, transparency: Int = 0, hide: Bool = false)
+  @discardableResult public func trendline(
+    color: Color = .black, width: Float = 2.25, dash_type: Int, transparency: Int = 0,
+    hide: Bool = false
+  )
     -> Series
   {
     var line = lxw_chart_line(
-      color: Color.black.rawValue, none: (hide ? 1 : 0), width: width, dash_type: UInt8(dash_type), transparency: UInt8(transparency))
+      color: Color.black.rawValue, none: (hide ? 1 : 0), width: width, dash_type: UInt8(dash_type),
+      transparency: UInt8(transparency))
     chart_series_set_trendline_line(lxw_chart_series, &line)
     return self
   }

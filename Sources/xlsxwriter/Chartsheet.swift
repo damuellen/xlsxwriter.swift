@@ -8,7 +8,9 @@ import Cxlsxwriter
 /// Struct to represent an Excel chartsheet.
 public struct Chartsheet {
   var lxw_chartsheet: UnsafeMutablePointer<lxw_chartsheet>
-  init(_ lxw_chartsheet: UnsafeMutablePointer<lxw_chartsheet>) { self.lxw_chartsheet = lxw_chartsheet }
+  init(_ lxw_chartsheet: UnsafeMutablePointer<lxw_chartsheet>) {
+    self.lxw_chartsheet = lxw_chartsheet
+  }
   /// Insert a chart object into a chartsheet
   @discardableResult public func set(chart: Chart) -> Chartsheet {
     chartsheet_set_chart(lxw_chartsheet, chart.lxw_chart)
@@ -31,7 +33,7 @@ public struct Chartsheet {
   }
   /// Protect elements of a chartsheet from modification.
   @discardableResult public func protect(password: String) -> Chartsheet {
-    password.withCString { chartsheet_protect(lxw_chartsheet, $0, nil) } 
+    password.withCString { chartsheet_protect(lxw_chartsheet, $0, nil) }
     return self
   }
   /// Set the paper type for printing.

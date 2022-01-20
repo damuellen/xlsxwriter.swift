@@ -39,17 +39,24 @@ public struct Workbook {
   /// Add a new format to the Excel workbook.
   public func addFormat() -> Format { Format(workbook_add_format(lxw_workbook)) }
   /// Create a new chart to be added to a worksheet
-  public func addChart(type: Chart_type) -> Chart { Chart(workbook_add_chart(lxw_workbook, type.rawValue)) }
+  public func addChart(type: Chart_type) -> Chart {
+    Chart(workbook_add_chart(lxw_workbook, type.rawValue))
+  }
   /// Get a worksheet object from its name.
   public subscript(worksheet name: String) -> Worksheet? {
-    guard let ws = name.withCString({ s in workbook_get_worksheet_by_name(lxw_workbook, s) }) else { return nil }
+    guard let ws = name.withCString({ s in workbook_get_worksheet_by_name(lxw_workbook, s) }) else {
+      return nil
+    }
     return Worksheet(ws)
   }
   /// Get a chartsheet object from its name.
   public subscript(chartsheet name: String) -> Chartsheet? {
-    guard let cs = name.withCString({ s in workbook_get_chartsheet_by_name(lxw_workbook, s) }) else { return nil }
+    guard let cs = name.withCString({ s in workbook_get_chartsheet_by_name(lxw_workbook, s) })
+    else { return nil }
     return Chartsheet(cs)
   }
   /// Validate a worksheet or chartsheet name.
-  func validate(sheet_name: String) { let _ = sheet_name.withCString { workbook_validate_sheet_name(lxw_workbook, $0) } }
+  func validate(sheet_name: String) {
+    let _ = sheet_name.withCString { workbook_validate_sheet_name(lxw_workbook, $0) }
+  }
 }
