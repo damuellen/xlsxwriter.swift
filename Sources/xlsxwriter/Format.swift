@@ -96,6 +96,12 @@ public struct Format {
     format_set_bg_color(lxw_format, color.rawValue)
     return self
   }
+  /// Set the pattern background color for a cell.
+  @discardableResult public func background(argb: UInt32) -> Format {
+    format_set_pattern(lxw_format, 1)
+    format_set_bg_color(lxw_format, argb)
+    return self
+  }
   /// Set the rotation of the text in a cell.
   @discardableResult public func rotation(angle: Int) -> Format {
     format_set_rotation(lxw_format, Int16(angle))
