@@ -5,8 +5,8 @@
 
 import Foundation
 
-public enum Value: ExpressibleByFloatLiteral, ExpressibleByStringLiteral {
-  case url(URL)
+public enum Value: ExpressibleByFloatLiteral, ExpressibleByStringLiteral, ExpressibleByIntegerLiteral {
+  case url(URL, title: String?)
   case blank
   case comment(String)
   case number(Double)
@@ -16,6 +16,7 @@ public enum Value: ExpressibleByFloatLiteral, ExpressibleByStringLiteral {
   case datetime(Date)
   public init(floatLiteral value: Double) { self = .number(value) }
   public init(stringLiteral value: String) { self = .string(value) }
+  public init(integerLiteral value: Double) { self = .number(Double(value)) }
 }
 
 public enum Axes { case X, Y }

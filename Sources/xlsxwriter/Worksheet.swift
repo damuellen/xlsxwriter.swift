@@ -78,16 +78,32 @@ public struct Worksheet {
     let f = format?.lxw_format
     let error: lxw_error
       switch value {
-      case .number(let number): error = worksheet_write_number(lxw_worksheet, r, c, number, f)
-      case .string(let string): error = string.withCString { s in worksheet_write_string(lxw_worksheet, r, c, s, f) }
-      case .url(let url): error = url.absoluteString.withCString { s in worksheet_write_url(lxw_worksheet, r, c, s, f) }
-      case .blank: error = worksheet_write_blank(lxw_worksheet, r, c, f)
-      case .comment(let comment): error = comment.withCString { s in worksheet_write_comment(lxw_worksheet, r, c, s) }
-      case .boolean(let boolean): error = worksheet_write_boolean(lxw_worksheet, r, c, Int32(boolean ? 1 : 0), f)
-      case .formula(let formula): error = formula.withCString { s in worksheet_write_formula(lxw_worksheet, r, c, s, f) }
+      case .number(let number):
+        error = worksheet_write_number(lxw_worksheet, r, c, number, f)
+      case .string(let string):
+          error = string.withCString { s in worksheet_write_string(lxw_worksheet, r, c, s, f) }
+      case .url(let url, let title):
+          error = url.absoluteString.withCString { s in
+              worksheet_write_url(lxw_worksheet, r, c, s, f)
+              if let title = title {
+                  return title.withCString { t in
+                      worksheet_write_url_opt(lxw_worksheet, r, c, s, f, t, nil)
+                  }
+              } else {
+                  return worksheet_write_url(lxw_worksheet, r, c, s, f)
+              }
+          }
+      case .blank:
+          error = worksheet_write_blank(lxw_worksheet, r, c, f)
+      case .comment(let comment):
+          error = comment.withCString { s in worksheet_write_comment(lxw_worksheet, r, c, s) }
+      case .boolean(let boolean):
+          error = worksheet_write_boolean(lxw_worksheet, r, c, Int32(boolean ? 1 : 0), f)
+      case .formula(let formula):
+          error = formula.withCString { s in worksheet_write_formula(lxw_worksheet, r, c, s, f) }
       case .datetime(let datetime):
-        error = lxw_error(rawValue: 0)
-        worksheet_write_unixtime(lxw_worksheet, r, c, Int64(datetime.timeIntervalSince1970), f)
+          error = lxw_error(rawValue: 0)
+          worksheet_write_unixtime(lxw_worksheet, r, c, Int64(datetime.timeIntervalSince1970), f)
       }
       if error.rawValue != 0 { fatalError(String(cString: lxw_strerror(error))) }
     
