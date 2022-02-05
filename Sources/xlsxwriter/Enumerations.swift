@@ -31,7 +31,7 @@ public enum Trendline_type: UInt8 {
 }
 
 /// Cell border styles for use with format.set_border()
-public enum Border: UInt8 {
+public enum Border: UInt8, Codable {
   case noBorder
   case thin
   case medium
@@ -49,7 +49,7 @@ public enum Border: UInt8 {
 }
 
 /// Alignment values for format.set(alignment:)
-public enum HorizontalAlignment: UInt8 {
+public enum HorizontalAlignment: UInt8, Codable {
   case none = 0
   case left
   case center
@@ -62,7 +62,7 @@ public enum HorizontalAlignment: UInt8 {
 }
 
 /// Alignment values for format.set(alignment:)
-public enum VerticalAlignment: UInt8 {
+public enum VerticalAlignment: UInt8, Codable {
   case top = 8
   case bottom
   case center
