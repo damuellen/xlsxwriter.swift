@@ -28,13 +28,14 @@ public struct Color: Codable {
     #endif
     
     #if canImport(UIKit) || canImport(AppKit)
-    public init(_ color: Native) {
+    public init?(_ color: Native) {
         var r: CGFloat = 0
         var g: CGFloat = 0
         var b: CGFloat = 0
         var a: CGFloat = 0
 
-        color.getRed(&r, green: &g, blue: &b, alpha: &a)
+        guard let rgba = color.usingColorSpace(.deviceRGB) else { return nil }
+        rgba.getRed(&r, green: &g, blue: &b, alpha: &a)
 
         rawValue = 0
         rawValue += UInt32((a * 255.0).rounded()) << (3 * 8)
@@ -46,7 +47,7 @@ public struct Color: Codable {
     
     #if canImport(SwiftUI)
     @available(macOS 11.0, *)
-    public init(color: SwiftUI.Color) {
+    public init?(color: SwiftUI.Color) {
         self.init(Native(color))
     }
     #endif
