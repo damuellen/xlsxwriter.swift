@@ -15,7 +15,7 @@ import AppKit
 
 public struct Color: Codable {
     
-    var rawValue: UInt32
+    public var rawValue: UInt32
 
     public init(rawValue: UInt32) {
         self.rawValue = rawValue
@@ -49,6 +49,17 @@ public struct Color: Codable {
     @available(macOS 11.0, *)
     public init?(color: SwiftUI.Color) {
         self.init(Native(color))
+    }
+    #endif
+    
+    #if canImport(SwiftUI)
+    @available(macOS 11.0, *)
+    public var swiftUIColor: SwiftUI.Color {
+        let alpha = Double((rawValue >> (3 * 8)) & 0xFF) / 255.0
+        let red =   Double((rawValue >> (2 * 8)) & 0xFF) / 255.0
+        let green = Double((rawValue >> (1 * 8)) & 0xFF) / 255.0
+        let blue =  Double((rawValue >> (0 * 8)) & 0xFF) / 255.0
+        return SwiftUI.Color(red: red, green: green, blue: blue, opacity: alpha)
     }
     #endif
 }
