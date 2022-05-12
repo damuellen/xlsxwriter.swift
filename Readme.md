@@ -43,9 +43,17 @@ Swift code.
 
 2. Build your project:
 
+
+(*nix) 
   ```sh
   $ swift build
   ```
+(Windows only)
+  ```sh
+  $ swift build -Xswiftc -LC:/vcpkg/installed/x64-windows/lib/ -Xcc -IC:/vcpkg/installed/x64-windows/include/
+  ```
+  
+  #### Attention: Install the libxlsxwriter c library first, not part of the build.
 
 ## The libxlsxwriter library
 
