@@ -33,7 +33,7 @@ public struct Cols: ExpressibleByStringLiteral, ExpressibleByArrayLiteral {
     self.col = UInt16(elements[0])
     self.col2 = UInt16(elements[1])
   }
-  init(_ col: UInt32, _ col2: UInt16) {
+  init(_ col: UInt16, _ col2: UInt16) {
     self.col = col2
     self.col2 = col2
   }
