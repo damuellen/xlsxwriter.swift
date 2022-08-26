@@ -95,7 +95,7 @@ public struct Worksheet {
     case .string(let string):
       error = string.withCString { s in worksheet_write_string(lxw_worksheet, r, c, s, f) }
     case .url(let url):
-      error = url.path.withCString { s in worksheet_write_url(lxw_worksheet, r, c, s, f) }
+      error = url.absoluteString.withCString { s in worksheet_write_url(lxw_worksheet, r, c, s, f) }
     case .blank: error = worksheet_write_blank(lxw_worksheet, r, c, f)
     case .comment(let comment):
       error = comment.withCString { s in worksheet_write_comment(lxw_worksheet, r, c, s) }
