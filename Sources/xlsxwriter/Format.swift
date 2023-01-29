@@ -3,7 +3,7 @@
 //  Created by Daniel Müllenborn on 31.12.20.
 //
 
-import Cxlsxwriter
+import libxlsxwriter
 
 /// Struct to represent the formatting properties of an Excel format.
 public struct Format {
