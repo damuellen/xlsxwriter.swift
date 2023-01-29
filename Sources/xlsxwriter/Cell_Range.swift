@@ -5,7 +5,7 @@
 //  Created by Daniel Müllenborn on 02.01.21.
 //
 
-import Cxlsxwriter
+import libxlsxwriter
 
 public struct Cell: ExpressibleByStringLiteral, ExpressibleByArrayLiteral {
   let row: UInt32, col: UInt16
