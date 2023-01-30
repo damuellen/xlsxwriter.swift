@@ -26,7 +26,9 @@ ws.write(.string("World"), [0, 1], format: format)
 
 ## Installation
 
-Install Libxlswriter first. See [Getting started](https://libxlsxwriter.github.io/getting_started.html).
+First install the libxlswriter C library on your system. See [Getting started](https://libxlsxwriter.github.io/getting_started.html).
+
+Alternatively, you can use SPM branch, then the library will also be compiled with the Swift Package Manager.
 
 ### Swift Package Manager
 
@@ -55,7 +57,7 @@ Swift code.
   
   #### Attention: Install the libxlsxwriter c library first, not part of the build.
 
-or (use the SPM Branch, the library is compiled as part of the build.)
+or Alternative method (use the SPM Branch, the library is compiled as part of the build.)
 
 1. Add the following to your `Package.swift` file:
 
