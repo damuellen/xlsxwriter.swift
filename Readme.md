@@ -37,7 +37,7 @@ Swift code.
 
   ```swift
   dependencies: [
-      .package(url: "https://github.com/damuellen/xlsxwriter.swift", from: "1.0.0")
+      .package(url: "https://github.com/damuellen/xlsxwriter.swift", branch: "main")
   ]
   ```
 
@@ -54,6 +54,16 @@ Swift code.
   ```
   
   #### Attention: Install the libxlsxwriter c library first, not part of the build.
+
+or (use the SPM Branch, the library is compiled as part of the build.)
+
+1. Add the following to your `Package.swift` file:
+
+  ```swift
+  dependencies: [
+      .package(url: "https://github.com/damuellen/xlsxwriter.swift", branch: "SPM")
+  ]
+  ```
 
 ## The libxlsxwriter library
 
