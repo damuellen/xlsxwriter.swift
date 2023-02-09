@@ -7,7 +7,7 @@ let package = Package(
         .library(name: "xlsxwriter", targets: ["xlsxwriter"]),
     ],
     dependencies: [
-        .package(url: "https://github.com/jmcnamara/libxlsxwriter", .branchItem("main")),
+        .package(url: "https://github.com/damuellen/libxlsxwriter", .branchItem("main")),
     ],
     targets: [
         .target(
