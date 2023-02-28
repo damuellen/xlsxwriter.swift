@@ -85,6 +85,22 @@ public struct Chart {
     }
     return self
   }
+  /// Set the increment of the major units in the axis
+  @discardableResult public func major_unit(_ axis: Axes, _ unit: Double) -> Chart {
+    switch axis {
+    case .X: chart_axis_set_major_unit(lxw_chart.pointee.x_axis, unit)
+    case .Y: chart_axis_set_major_unit(lxw_chart.pointee.y_axis, unit)
+    }
+    return self
+  }
+  /// Set the increment of the minor units in the axis.
+  @discardableResult public func minor_unit(_ axis: Axes, _ unit: Double) -> Chart {
+    switch axis {
+    case .X: chart_axis_set_minor_unit(lxw_chart.pointee.x_axis, unit)
+    case .Y: chart_axis_set_minor_unit(lxw_chart.pointee.y_axis, unit)
+    }
+    return self
+  }
   /// Turn off an automatic chart title.
   @discardableResult public func title_off() -> Chart {
     chart_title_off(lxw_chart)
