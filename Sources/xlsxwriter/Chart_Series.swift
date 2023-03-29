@@ -195,7 +195,7 @@ public struct Series {
     -> Series
   {
     var line = lxw_chart_line(
-      color: Color.black.rawValue, none: (hide ? 1 : 0), width: width, dash_type: UInt8(dash_type),
+    color: Color.black.hex, none: (hide ? 1 : 0), width: width, dash_type: UInt8(dash_type),
       transparency: UInt8(transparency))
     chart_series_set_trendline_line(lxw_chart_series, &line)
     return self

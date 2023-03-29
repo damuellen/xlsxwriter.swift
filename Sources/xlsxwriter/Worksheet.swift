@@ -165,7 +165,7 @@ public struct Worksheet {
   }
   /// Set the color of the worksheet tab.
   @discardableResult public func tab(color: Color) -> Worksheet {
-    worksheet_set_tab_color(lxw_worksheet, color.rawValue)
+    worksheet_set_tab_color(lxw_worksheet, color.hex)
     return self
   }
   /// Set the default row properties.

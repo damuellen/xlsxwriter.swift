@@ -114,24 +114,6 @@ public enum PaperType: UInt8 {
   case German_Std_Fanfold  // 8 1/2 x 12 in
   case German_Legal_Fanfold  // 8 1/2 x 13 in
 }
-/// Predefined values for common colors.
-public enum Color: UInt32 {
-  case black = 0x1000000
-  case blue = 0x0000FF
-  case brown = 0x800000
-  case cyan = 0x00FFFF
-  case gray = 0x808080
-  case green = 0x008000
-  case lime = 0x00FF00
-  case magenta = 0xFF00FF
-  case navy = 0x000080
-  case orange = 0xFF6600
-  case purple = 0x800080
-  case red = 0xFF0000
-  case silver = 0xC0C0C0
-  case white = 0xFFFFFF
-  case yellow = 0xFFFF00
-}
 
 /// Available chart types.
 public enum Chart_type: UInt8 {
