@@ -147,6 +147,13 @@ public struct Worksheet {
     _ = worksheet_set_column(lxw_worksheet, first, last, width, f)
     return self
   }
+  /// Set the properties for a row of cells
+  @discardableResult public func row(_ row: UInt32, height: Double, format: Format? = nil) -> Worksheet
+  {
+    let f = format?.lxw_format
+    _ = worksheet_set_row(lxw_worksheet, row, height, f)
+    return self
+  }
   /// Set the properties for one or more columns of cells.
   @discardableResult public func hide_columns(_ col: Int, width: Double = 8.43) -> Worksheet {
     let first = UInt16(col)
