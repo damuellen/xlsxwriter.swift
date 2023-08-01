@@ -1,6 +1,52 @@
 # xlsxwriter.swift
 
-xlsxwriter.swift: A wrapper in Swift around Libxlsxwriter for creating Excel XLSX files.
+xlsxwriter.swift is a powerful Swift wrapper around Libxlsxwriter, enabling the creation of Excel XLSX files with ease. This library allows developers to generate sophisticated Excel files with various formatting options, text, numbers, formulas, hyperlinks, and much more.
+
+## Getting Started
+
+Before using xlsxwriter.swift, you need to install the Libxlsxwriter C library on your system. Please refer to the [Getting Started](https://libxlsxwriter.github.io/getting_started.html) guide for instructions.
+
+Alternatively, you can use the SPM branch, which compiles the library along with the Swift Package Manager.
+
+### Swift Package Manager
+
+The Swift Package Manager is a convenient tool for managing Swift code distribution. To use xlsxwriter.swift with SPM:
+
+1. Add the following line to your `Package.swift` file in the `dependencies` array:
+
+```swift
+dependencies: [
+    .package(url: "https://github.com/damuellen/xlsxwriter.swift", branch: "main")
+]
+```
+
+or, if you want to use the SPM branch:
+
+```swift
+dependencies: [
+    .package(url: "https://github.com/damuellen/xlsxwriter.swift", branch: "SPM")
+]
+```
+
+2. Build your project using Swift Package Manager.
+
+For *nix systems:
+
+```sh
+$ swift build
+```
+
+For Windows:
+
+```sh
+$ swift build -Xswiftc -LC:/vcpkg/installed/x64-windows/lib/ -Xcc -IC:/vcpkg/installed/x64-windows/include/
+```
+
+*Please note: You need to install the libxlsxwriter C library first; it is not included in the build.*
+
+## Usage
+
+With xlsxwriter.swift, creating Excel XLSX files is straightforward and efficient. The example below demonstrates how to create a new workbook, add a worksheet, and write some data with formatting:
 
 ```Swift
 import xlsxwriter
@@ -21,76 +67,14 @@ ws.write(.string("Hello"), [0, 0])
 
 // Text with formatting.
 ws.write(.string("World"), [0, 1], format: format)
-
 ```
 
-## Installation
+## About Libxlsxwriter
 
-First install the libxlswriter C library on your system. See [Getting started](https://libxlsxwriter.github.io/getting_started.html).
+Libxlsxwriter is a powerful C library that allows developers to write text, numbers, formulas, hyperlinks, and more to multiple worksheets in an Excel 2007+ XLSX file. Some of its key features include compatibility with Excel XLSX files, full Excel formatting support, merged cells, defined names, charts, data validation, and more.
 
-Alternatively, you can use SPM branch, then the library will also be compiled with the Swift Package Manager.
+The library is released under the FreeBSD license and works on various platforms, including Linux, FreeBSD, OpenBSD, macOS, iOS, and Windows. It has minimal dependencies and offers high performance even with large files.
 
-### Swift Package Manager
+The source code for Libxlsxwriter is available on [GitHub](https://github.com/jmcnamara/libxlsxwriter), making it a flexible and reliable choice for creating Excel XLSX files programmatically.
 
-The [Swift Package Manager](https://swift.org/package-manager) is a tool for managing the distribution of
-Swift code.
-
-1. Add the following to your `Package.swift` file:
-
-  ```swift
-  dependencies: [
-      .package(url: "https://github.com/damuellen/xlsxwriter.swift", branch: "main")
-  ]
-  ```
-
-2. Build your project:
-
-
-(*nix) 
-  ```sh
-  $ swift build
-  ```
-(Windows only)
-  ```sh
-  $ swift build -Xswiftc -LC:/vcpkg/installed/x64-windows/lib/ -Xcc -IC:/vcpkg/installed/x64-windows/include/
-  ```
-  
-  #### Attention: Install the libxlsxwriter c library first, not part of the build.
-
-or Alternative method (use the SPM Branch, the library is compiled as part of the build.)
-
-1. Add the following to your `Package.swift` file:
-
-  ```swift
-  dependencies: [
-      .package(url: "https://github.com/damuellen/xlsxwriter.swift", branch: "SPM")
-  ]
-  ```
-
-## The libxlsxwriter library
-
-Libxlsxwriter is a C library that can be used to write text, numbers, formulas
-and hyperlinks to multiple worksheets in an Excel 2007+ XLSX file.
-
-It supports features such as:
-
-- 100% compatible Excel XLSX files.
-- Full Excel formatting.
-- Merged cells.
-- Defined names.
-- Autofilters.
-- Charts.
-- Data validation and drop down lists.
-- Conditional formatting.
-- Worksheet PNG/JPEG images.
-- Cell comments.
-- Support for adding Macros.
-- Memory optimization mode for writing large files.
-- Source code available on [GitHub](https://github.com/jmcnamara/libxlsxwriter).
-- FreeBSD license.
-- ANSI C.
-- Works with GCC, Clang, Xcode, MSVC 2015, ICC, TCC, MinGW, MingGW-w64/32.
-- Works on Linux, FreeBSD, OpenBSD, OS X, iOS and Windows. Also works on MSYS/MSYS2 and Cygwin.
-- Compiles for 32 and 64 bit.
-- Compiles and works on big and little endian systems.
-- The only dependency is on `zlib`.
+With xlsxwriter.swift, developers can harness the power of Libxlsxwriter in a Swift environment, enabling seamless integration of Excel file generation into their Swift applications.
