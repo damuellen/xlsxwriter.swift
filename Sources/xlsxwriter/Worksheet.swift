@@ -242,9 +242,9 @@ public struct Worksheet {
   }
 }
 
-private func makeCString(from str: String) -> UnsafeMutablePointer<CChar> {
+private func makeCString(from str: String) -> UnsafePointer<CChar> {
   let count = str.utf8.count + 1
   let result = UnsafeMutablePointer<CChar>.allocate(capacity: count)
   str.withCString { result.initialize(from: $0, count: count) }
-  return result
+  return UnsafePointer(result)
 }
