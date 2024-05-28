@@ -3,7 +3,7 @@
 //  Created by Daniel Müllenborn on 31.12.20.
 //
 
-import Cxlsxwriter
+import libxlsxwriter
 
 /// Struct to represent an Excel worksheet.
 public struct Worksheet {
@@ -249,9 +249,9 @@ public struct Worksheet {
   }
 }
 
-private func makeCString(from str: String) -> UnsafeMutablePointer<CChar> {
+private func makeCString(from str: String) -> UnsafePointer<CChar> {
   let count = str.utf8.count + 1
   let result = UnsafeMutablePointer<CChar>.allocate(capacity: count)
   str.withCString { result.initialize(from: $0, count: count) }
-  return result
+  return UnsafePointer(result)
 }

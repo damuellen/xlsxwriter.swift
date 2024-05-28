@@ -1,5 +1,0 @@
-module Cxlsxwriter [system] {
-  umbrella header "xlsxwriter.h"
-  link "xlsxwriter"
-  export *
-}
